@@ -30,3 +30,6 @@ async def enter_email(message: types.Message , state: FSMContext):
     all_us = db.select_all_users()
     await message.answer(f"Ты зарегестрирован. В базе таких как ты {count_users}:{all_us}. ")
     await state.finish()
+
+
+

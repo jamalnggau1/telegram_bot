@@ -1,6 +1,6 @@
 from aiogram import executor
 
-from loader import dp
+from loader import dp, sdb
 
 from loader import db
 import middlewares, filters, handlers
@@ -13,6 +13,11 @@ async def on_startup(dispatcher):
 
     try:
         db.create_table_users()
+        sdb.skills_db.create_table_skills_categories()
+        sdb.skills_db.execute(
+            sql="INSERT INTO Skills_Categories(skill_category_id,category_name) VALUES(?,?,?)",
+            parametrs=[1,"Tech"],
+            commit=True)
     except Exception as e:
         print(e)
 

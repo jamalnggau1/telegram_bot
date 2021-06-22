@@ -12,8 +12,6 @@ from loader import dp, db
 async def bot_start(message: types.Message, state: FSMContext):
     await message.answer(f"Привет, {message.from_user.full_name}!")
 
-
-
     count_users = db.count_users()[0]
     all_us = db.select_all_users()
     user = db.select_user(message.from_user.id)
@@ -21,10 +19,7 @@ async def bot_start(message: types.Message, state: FSMContext):
     if user is not None:
         await message.answer(f"Ты уже зарегестрирован. В базе таких как ты {count_users}: {all_us}")
 
-
     else:
 
         await message.answer(text="Ты не зарегестрирован. Жми  на Кнопку ниже",
                              reply_markup=regestration_or_profile_button)
-
-
