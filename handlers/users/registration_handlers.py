@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
 from keyboards.inline.callback_data import registration_callback
-from loader import dp, db
+from loader import dp, users_db
 from states import Registration_states
 
 
@@ -24,10 +24,10 @@ async def enter_email(message: types.Message , state: FSMContext):
     full_name = message.from_user.full_name
 
 
-    db.add_user(id, full_name, email)
+    users_db.add_user(id, full_name, email)
 
-    count_users = db.count_users()[0]
-    all_us = db.select_all_users()
+    count_users = users_db.count_users()[0]
+    all_us = users_db.select_all_users()
     await message.answer(f"Ты зарегестрирован. В базе таких как ты {count_users}:{all_us}. ")
     await state.finish()
 
