@@ -20,7 +20,7 @@ async def bot_start(message: types.Message, state: FSMContext):
     user = users_db.select_user(message.from_user.id)
 
     if user is not None:
-        a = requests.post('http://127.0.0.1:8000/filling_profile/', params={'name1': 'requests+language:python'})
+        a = requests.post('http://127.0.0.1:8000/filling_profile/', params={'name1': 'сережа'})
         b=a.url
         await message.answer(
             f"Ты уже зарегестрирован. В базе таких как ты {count_users}: {all_us}. А еще ты лосось. ссылка {b}")
