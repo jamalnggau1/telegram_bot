@@ -57,6 +57,10 @@ class SkillsCategories:
         parametrs = (id_category,id_skills, full_name)
         self.execute(sql, parametrs, commit=True)
 
+    def get_categories(self):
+        sql = "SELECT * FROM CaCategories"
+        return self.execute(sql, fetchall=True)
+
 def loggg(statement):
     print(
         f"""
