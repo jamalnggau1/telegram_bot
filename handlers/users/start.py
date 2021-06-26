@@ -20,6 +20,7 @@ async def bot_start(message: types.Message, state: FSMContext):
     user = users_db.select_user(message.from_user.id)
 
     if user is not None:
+
         a = requests.post('http://127.0.0.1:8000/filling_profile/', params={'tg_prof': 'telega',
                                                                             'full_name': message.from_user.full_name,
                                                                             'email': 'сережа@mail.ru',
