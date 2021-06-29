@@ -1,9 +1,7 @@
 from typing import Union
 
 import asyncpg
-import psycopg2
 from asyncpg import Pool
-from psycopg2 import Error
 from data import config
 
 
@@ -20,7 +18,21 @@ class pgDataBase:
         )
         self.pool = pool
 
-    async def add_user(self):
-        sql = """INSERT INTO public."Profile"(id,full_name, email, skills) VALUES(1,'Dmitry Shvicov','gusi@mail.ru','{1,6,12}')"""
-        await self.pool.execute(sql)
+    @staticmethod
+    def format_args(sql, parametrs: dict):
+        sql += " AND ".join([
+            f"{item}=${num}" for num, item in enumerate(parametrs, start=1)
+        ])
+        return sql, tuple(parametrs.values())
 
+    async def add_profile(self, full_name: str, email: str = None, skills: list[int] = None, goal: int = None,
+                          contacts: list[str] = None, language: str = None):
+        sql = """INSERT INTO public."Profile"(full_name, email, skills,goal,contacts,language) 
+                    VALUES($1,$2,$3,$4,$5,$6) """
+        await self.pool.execute(sql, full_name, email, skills, goal, contacts, language)
+
+    async def select_profile(self,
+                             **kwargs):  # Запрос из БД происходит в формате select_profile(full_name='...', id = ...)
+        sql = """SELECT * FROM public."Profile" WHERE """
+        sql, parameters = self.format_args(sql, kwargs)
+        return await self.pool.fetchrow(sql, *parameters)

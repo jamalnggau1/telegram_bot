@@ -8,7 +8,7 @@ regestration_or_profile_button = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(
-                text="Регистрация",
+                text="регистрация",
                 callback_data=registration_callback.new(status="reg")
 
             )
