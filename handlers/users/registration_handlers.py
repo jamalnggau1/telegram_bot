@@ -1,3 +1,4 @@
+import requests
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
@@ -21,7 +22,14 @@ async def enter_email(message: types.Message, state: FSMContext):
     email = message.text
     full_name = message.from_user.full_name
 
-    await pg_db.add_profile(full_name, email)
+    # await pg_db.add_profile(full_name, email)
 
     await message.answer(f"Ты зарегестрирован.")
+
+    a = requests.post('http://127.0.0.1:8000/filling_profile/', params={'full_name': message.from_user.full_name,
+                                                                        'email': email
+                                                                        })
+    b = a.url
+
+    await message.answer(f"Для дальнейшего заполнения профиля переходи по ссылке {b}")
     await state.finish()

@@ -27,12 +27,12 @@ class pgDataBase:
 
     async def add_profile(self, full_name: str, email: str = None, skills: list[int] = None, goal: int = None,
                           contacts: list[str] = None, language: str = None):
-        sql = """INSERT INTO public."Profile"(full_name, email, skills,goal,contacts,language) 
-                    VALUES($1,$2,$3,$4,$5,$6) """
-        await self.pool.execute(sql, full_name, email, skills, goal, contacts, language)
+        sql = """INSERT INTO public.filling_profile_profile(full_name, email) 
+                    VALUES($1,$2) """
+        await self.pool.execute(sql, full_name, email)
 
     async def select_profile(self,
                              **kwargs):  # Запрос из БД происходит в формате select_profile(full_name='...', id = ...)
-        sql = """SELECT * FROM public."Profile" WHERE """
+        sql = """SELECT * FROM public.filling_profile_profile WHERE """
         sql, parameters = self.format_args(sql, kwargs)
         return await self.pool.fetchrow(sql, *parameters)
