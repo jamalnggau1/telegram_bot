@@ -9,12 +9,6 @@ from utils.set_bot_commands import set_default_commands
 
 
 async def on_startup(dispatcher):
-    try:
-        users_db.create_table_users()
-
-
-    except Exception as e:
-        print(e)
 
     # Устанавливаем дефолтные команды
     await set_default_commands(dispatcher)
