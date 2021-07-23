@@ -5,6 +5,6 @@ WORKDIR /usr/src/app/telegram_bot
 
 COPY . /usr/src/app/telegram_bot
 
-RUN requirements install
+RUN pip install -r requirements.txt
 
 CMD ["python", "app.py"]
