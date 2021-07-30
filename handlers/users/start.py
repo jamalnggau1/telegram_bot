@@ -6,6 +6,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from data import config
 from keyboards.inline.callback_data import edite_profile_callback, registration_callback
 from loader import skills_categories_db, pg_db
 
@@ -22,9 +23,10 @@ async def bot_start(message: types.Message, state: FSMContext):
 
     if user is not None:
 
+
         await message.answer(f"Привет 👋 {full_name}! На связи @AndrushaTestbot. Я смотрю ты тут уже не в первый раз. "
                              f"Что желаешь?", reply_markup=change_profile_or_status_button("изменить профиль",
-                              requests.post('http://127.0.0.1:8000/filling_profile/',
+                              requests.post('http://'+config.IP+':'+config.PORT + '/filling_profile/',
                                            params={'full_name': message.from_user.full_name}).url)
        )
     else:

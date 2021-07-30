@@ -4,9 +4,9 @@ from random import random, randrange, getrandbits, randint
 import requests
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters import Command
 from aiogram.types import CallbackQuery
 
+from data import config
 from keyboards.inline.callback_data import registration_callback
 from loader import dp, users_db, pg_db
 from states import Registration_states
@@ -31,13 +31,11 @@ async def enter_email(message: types.Message, state: FSMContext):
 
     await message.answer(f"Ты зарегестрирован.")
 
-    a = requests.post('http://127.0.0.1:8000/filling_profile/', params={'full_name': message.from_user.full_name,
-                                                                        'email': email,
-                                                                        'contacts': message.from_user.full_name
-                                                                        })
-    b = a.url
+    a = requests.post('http://' + config.IP + ':' + config.PORT + '/filling_profile/',
+                      params={'full_name': message.from_user.full_name,
+                              'email': email,
+                              'contacts': message.from_user.full_name
+                              })
 
-    await message.answer(f"Я записал тебя. Если хочешь дополнить информацию, можешь перейти по ссылке {b}")
+    await message.answer(f"Я записал тебя. Если хочешь дополнить информацию, можешь перейти по ссылке {a.url}")
     await state.finish()
-
-
