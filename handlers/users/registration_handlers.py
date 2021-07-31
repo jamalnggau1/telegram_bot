@@ -25,16 +25,16 @@ async def reg_bot(callback: CallbackQuery):
 async def enter_email(message: types.Message, state: FSMContext):
     email = message.text
     full_name = message.from_user.full_name
-    contacts = message.from_user.full_name
+    user_name = "@"+message.from_user.username
 
-    await pg_db.add_profile(full_name, email, contacts=contacts)
+    await pg_db.add_profile(full_name, email, contacts=user_name)
 
     await message.answer(f"Ты зарегестрирован.")
 
     a = requests.post('http://' + config.IP + ':' + config.PORT + '/filling_profile/',
                       params={'full_name': message.from_user.full_name,
                               'email': email,
-                              'contacts': message.from_user.full_name
+                              'contacts': user_name
                               })
 
     await message.answer(f"Я записал тебя. Если хочешь дополнить информацию, можешь перейти по ссылке {a.url}")
