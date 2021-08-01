@@ -122,16 +122,17 @@ async def meeting_status_not_ready(callback: CallbackQuery):
     await pg_db.create()
     user_name = '@'+callback.from_user.username
 
-    await pg_db.update_profile_meeting_status("not ready", user_name)
+    await pg_db.update_profile_meeting_status("not ready", user_name) #обновляем профиль по username
 
     profile = await pg_db.select_profile(contacts=user_name)
     current_meeting_status = profile[7]
     await callback.message.answer(f"Статус  изменен на: {current_meeting_status}")
 
     profile_for_meeting = await pg_db.select_profile_for_meeting(profile[0])
+    #выбираем профиль по id
 
     if profile_for_meeting is not None:
-        await pg_db.delete_profile_for_meeting(profile[0])
+        await pg_db.delete_profile_for_meeting(profile[0]) #удаляем профиль по id
         await callback.message.answer(f"Вы убраны из таблицы поиска")
     else:
         await callback.message.answer(f"Вас не было в таблице поиска")
