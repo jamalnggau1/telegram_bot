@@ -10,6 +10,7 @@ from keyboards.inline.inline_buttons import meeting_status_button
 from loader import dp, pg_db
 
 
+
 @dp.message_handler(Command("meeting"))
 async def meeting(message: types.Message):
     await pg_db.create()
@@ -73,8 +74,8 @@ async def change_meeting_status(callback: CallbackQuery):
 
     await pg_db.create()
 
-    full_name = callback.from_user.full_name
-    profile = await pg_db.select_profile(contacts=full_name)
+    user_name = '@'+callback.from_user.username
+    profile = await pg_db.select_profile(contacts=user_name)
     current_meeting_status = profile[7]
 
     if current_meeting_status == "meeting":
@@ -96,18 +97,18 @@ async def meeting_status_waiting(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
     await pg_db.create()
-    full_name = callback.from_user.full_name
+    user_name = '@'+callback.from_user.username
 
-    await pg_db.update_profile_meeting_status("waiting", full_name)
+    await pg_db.update_profile_meeting_status("waiting", user_name)
 
-    profile = await pg_db.select_profile(contacts=full_name)
+    profile = await pg_db.select_profile(contacts=user_name)
     current_meeting_status = profile[7]
     await callback.message.answer(f"Статус  изменен на: {current_meeting_status}")
 
-    profile_for_meeting = await pg_db.select_profile_for_meeting(profile[2])
+    profile_for_meeting = await pg_db.select_profile_for_meeting(profile[0])
 
     if profile_for_meeting is None:
-        await pg_db.add_profile_for_meetting(profile[2])
+        await pg_db.add_profile_for_meetting(profile[0])
         await callback.message.answer(f"Вы добавлены в таблицу поиска")
 
     else:
@@ -119,18 +120,18 @@ async def meeting_status_not_ready(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
     await pg_db.create()
-    full_name = callback.from_user.full_name
+    user_name = '@'+callback.from_user.username
 
-    await pg_db.update_profile_meeting_status("not ready", full_name)
+    await pg_db.update_profile_meeting_status("not ready", user_name)
 
-    profile = await pg_db.select_profile(contacts=full_name)
+    profile = await pg_db.select_profile(contacts=user_name)
     current_meeting_status = profile[7]
     await callback.message.answer(f"Статус  изменен на: {current_meeting_status}")
 
-    profile_for_meeting = await pg_db.select_profile_for_meeting(profile[2])
+    profile_for_meeting = await pg_db.select_profile_for_meeting(profile[0])
 
     if profile_for_meeting is not None:
-        await pg_db.delete_profile_for_meeting(profile[2])
+        await pg_db.delete_profile_for_meeting(profile[0])
         await callback.message.answer(f"Вы убраны из таблицы поиска")
     else:
         await callback.message.answer(f"Вас не было в таблице поиска")
