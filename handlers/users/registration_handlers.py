@@ -1,5 +1,5 @@
-import datetime
-from random import random, randrange, getrandbits, randint
+
+import json
 
 import requests
 from aiogram import types
@@ -25,17 +25,37 @@ async def reg_bot(callback: CallbackQuery):
 async def enter_email(message: types.Message, state: FSMContext):
     email = message.text
     full_name = message.from_user.full_name
-    user_name = "@"+message.from_user.username
+    user_name = "@" + message.from_user.username
+    user_id = message.from_user.id
 
     await pg_db.add_profile(full_name, email, contacts=user_name)
 
-    await message.answer(f"Ты зарегестрирован.")
+    url = "http://127.0.0.1:8000/filling_profile/users/"
 
-    a = requests.post('http://' + config.IP + ':' + config.PORT + '/filling_profile/',
-                      params={'full_name': message.from_user.full_name,
-                              'email': email,
-                              'contacts': user_name
-                              })
+    payload = json.dumps({
+        "profile": {
+            "contacts": user_id,
+            "full_name": full_name,
+            "email": email
+        }
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
 
-    await message.answer(f"Я записал тебя. Если хочешь дополнить информацию, можешь перейти по ссылке {a.url}")
-    await state.finish()
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    if response.status_code == 201:
+        await message.answer(f"Ты зарегестрирован.")
+
+        a = requests.post('http://' + config.IP + ':' + config.PORT + '/filling_profile/',
+                          params={'full_name': message.from_user.full_name,
+                                  'email': email,
+                                  'contacts': user_name
+                                  })
+
+        await message.answer(f"Я записал тебя. Если хочешь дополнить информацию, можешь перейти по ссылке {a.url}")
+        await state.finish()
+
+    else:
+        await message.answer(f"акк не был записан")
