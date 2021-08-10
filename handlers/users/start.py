@@ -7,6 +7,7 @@ from aiogram.dispatcher.filters.builtin import CommandStart, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.json import json
 
+import constants
 from data import config
 from keyboards.inline.callback_data import edite_profile_callback, registration_callback
 from loader import skills_categories_db, pg_db
@@ -30,7 +31,8 @@ async def bot_start(message: types.Message, state: FSMContext):
 
     payload = json.dumps({
         "profile": {
-            "contacts": user_id
+            "contacts": user_id,
+            "machine_token":constants.a
         }
     })
     headers = {
@@ -38,7 +40,13 @@ async def bot_start(message: types.Message, state: FSMContext):
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
-    print(f'--------{response.status_code}---------------')
+    print(f'--------handler.users.start response.status_code:{response.status_code}---------------')
+    print(f'--------handler.users.start response.text:{response.text}---------------')
+
+    meeting_status=response.json().get("meeting_status")
+
+    # Если в response статус не 200(нет пользователя в базе), предлагаем пользователю зарегаться.
+    # Если пользователь в базе есть, сообщения с кнопками в который вшит топен пользователю отправит сервер через АПИ телеграмма
 
     # if user is not None:
 
@@ -50,7 +58,8 @@ async def bot_start(message: types.Message, state: FSMContext):
             f"Что желаешь?", reply_markup=change_profile_or_status_button("изменить профиль",
                                                                           requests.post(
                                                                               'http://' + config.IP + ':' + config.PORT + '/filling_profile/',
-                                                                              params={'contacts': user_name}).url)
+                                                                              params={'contacts': user_name}).url,
+                                                                          "изменить статус поиска встречи",meeting_status)
             )
 
     # profile не найден

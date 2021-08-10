@@ -16,7 +16,7 @@ regestration_button = InlineKeyboardMarkup(
 )
 
 
-def change_profile_or_status_button(text_btn1, url):
+def change_profile_or_status_button(text_btn1, url, text_btn2, meeting_status):
     return InlineKeyboardMarkup(
         row_width=2,
         inline_keyboard=[
@@ -28,8 +28,8 @@ def change_profile_or_status_button(text_btn1, url):
 
                 ),
                 InlineKeyboardButton(
-                    text="изменить статус поиска встречи",
-                    callback_data=registration_callback.new(status="change_meeting_status")
+                    text=text_btn2,
+                    callback_data=registration_callback.new(status=meeting_status)
 
                 )
             ]
