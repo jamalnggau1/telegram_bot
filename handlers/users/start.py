@@ -41,12 +41,14 @@ async def bot_start(message: types.Message, state: FSMContext):
     # status = 200 - Все хорошо profile есть
     if login(user_id, constants.a).status_code == 200:
 
+        url = f'''http://127.0.0.1:8000/filling_profile/'''
+
         await message.answer(
             f"Привет 👋 {message.from_user.full_name}! На связи @AndrushaTestbot. Я смотрю ты тут уже не в первый раз. "
             f"Что желаешь?", reply_markup=change_profile_or_status_button("изменить профиль",
                                                                           requests.post(
-                                                                              'http://' + config.IP + ':' + config.PORT + '/filling_profile/',
-                                                                              params={'contacts': user_name}).url,
+                                                                              url,
+                                                                              params={'token': login(user_id, constants.a).json().get("token"), 'contacts':user_id}).url,
                                                                           "изменить статус поиска встречи")
             )
 
