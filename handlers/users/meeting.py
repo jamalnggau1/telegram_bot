@@ -5,10 +5,13 @@ from aiogram import types
 from aiogram.dispatcher.filters import Command
 from aiogram.types import CallbackQuery
 
+import constants
 from filters.prefix_filter import isChangeMeetingStatus
-from keyboards.inline.callback_data import registration_callback
+from handlers.users.start import bot_start
+from keyboards.inline.callback_data import change_meeting_status_callback, meeting_status_callback
 from keyboards.inline.inline_buttons import meeting_status_button
 from loader import dp, pg_db, bot
+from request_to_server.requests import patch, login
 
 
 @dp.message_handler(Command("meeting"))
@@ -68,24 +71,26 @@ async def meeting(message: types.Message):
 
 
 
-@dp.callback_query_handler(isChangeMeetingStatus())
+@dp.callback_query_handler(change_meeting_status_callback.filter(status="change_meeting_status"))
 async def change_meeting_status(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    print(f'-----------{callback.data}-----------')
 
-    current_meeting_status = callback.data.split(':')[1]
+    current_meeting_status =login(callback.from_user.id, constants.a).json().get("meeting_status")
+    token=login(callback.from_user.id, constants.a).json().get("token")
 
-    if current_meeting_status == "meeting":
+    if current_meeting_status == "meetting":
         text_message = (f"Твой текущий статус: {current_meeting_status}. Это означает, что пара тебе подобрана, "
                         f"и встреча сейчас в самом разгаре. ")
-    elif current_meeting_status == "waiting":
+    elif current_meeting_status == "waitting":
         text_message = (f"Твой текущий статус: {current_meeting_status}. Это означает, что мы пытаемся "
                         f"подобрать для тебя подходящую пару. ")
     elif current_meeting_status == "not ready":
         text_message = (f"Твой текущий статус: {current_meeting_status}. Это означает, что ты не готов "
                         f"к встречам на этой неделе. ")
-    else: text_message = 'ybxtuj'
+    else: text_message = current_meeting_status
+
+    patch('waitting',token)
 
     await callback.message.answer(text_message + "Измени статус на:",
                                   reply_markup=meeting_status_button("waiting", "not ready"))
@@ -93,47 +98,31 @@ async def change_meeting_status(callback: CallbackQuery):
 
 
 
-# @dp.callback_query_handler(registration_callback.filter(status="meeting_status = waiting"))
-# async def meeting_status_waiting(callback: CallbackQuery):
-#     await callback.answer(cache_time=10)
-#
-#     await pg_db.create()
-#     user_name = '@'+callback.from_user.username
-#
-#     await pg_db.update_profile_meeting_status("waiting", user_name)
-#
-#     profile = await pg_db.select_profile(contacts=user_name)
-#     current_meeting_status = profile[7]
-#     await callback.message.answer(f"Статус  изменен на: {current_meeting_status}")
-#
-#     profile_for_meeting = await pg_db.select_profile_for_meeting(profile[0])
-#
-#     if profile_for_meeting is None:
-#         await pg_db.add_profile_for_meetting(profile[0])
-#         await callback.message.answer(f"Вы добавлены в таблицу поиска")
-#
-#     else:
-#         await callback.message.answer(f"Вы уже есть в таблице для поиска")
-#
-#
-# @dp.callback_query_handler(registration_callback.filter(status="meeting_status = not ready"))
-# async def meeting_status_not_ready(callback: CallbackQuery):
-#     await callback.answer(cache_time=10)
-#
-#     await pg_db.create()
-#     user_name = '@'+callback.from_user.username
-#
-#     await pg_db.update_profile_meeting_status("not ready", user_name) #обновляем профиль по username
-#
-#     profile = await pg_db.select_profile(contacts=user_name)
-#     current_meeting_status = profile[7]
-#     await callback.message.answer(f"Статус  изменен на: {current_meeting_status}")
-#
-#     profile_for_meeting = await pg_db.select_profile_for_meeting(profile[0])
-#     #выбираем профиль по id
-#
-#     if profile_for_meeting is not None:
-#         await pg_db.delete_profile_for_meeting(profile[0]) #удаляем профиль по id
-#         await callback.message.answer(f"Вы убраны из таблицы поиска")
-#     else:
-#         await callback.message.answer(f"Вас не было в таблице поиска")
+@dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = waiting"))
+async def meeting_status_waiting(callback: CallbackQuery):
+    await callback.answer(cache_time=10)
+
+    token = login(callback.from_user.id, constants.a).json().get("token")
+
+    if patch('waitting', token)==200:
+        current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
+        await callback.message.answer(f"Твой статус изменен на {current_meeting_status}")
+
+    else:
+        await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
+
+
+
+@dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = not ready"))
+async def meeting_status_not_ready(callback: CallbackQuery):
+    await callback.answer(cache_time=10)
+
+    token = login(callback.from_user.id, constants.a).json().get("token")
+
+    if patch('not ready', token) == 200:
+        current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
+        await callback.message.answer(f"Твой статус изменен на {current_meeting_status}")
+
+    else:
+        await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
+

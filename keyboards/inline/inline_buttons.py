@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from keyboards.inline.callback_data import registration_callback, edite_profile_callback, meeting_status_callback
+from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback, meeting_status_callback
 
 regestration_button = InlineKeyboardMarkup(
     row_width=1,
@@ -8,7 +8,7 @@ regestration_button = InlineKeyboardMarkup(
         [
             InlineKeyboardButton(
                 text="регистрация",
-                callback_data=registration_callback.new(status="reg")
+                callback_data=change_meeting_status_callback.new(status="reg")
 
             )
         ]
@@ -16,7 +16,7 @@ regestration_button = InlineKeyboardMarkup(
 )
 
 
-def change_profile_or_status_button(text_btn1, url, text_btn2, meeting_status):
+def change_profile_or_status_button(text_btn1, url, text_btn2):
     return InlineKeyboardMarkup(
         row_width=2,
         inline_keyboard=[
@@ -29,7 +29,7 @@ def change_profile_or_status_button(text_btn1, url, text_btn2, meeting_status):
                 ),
                 InlineKeyboardButton(
                     text=text_btn2,
-                    callback_data=registration_callback.new(status=meeting_status)
+                    callback_data=change_meeting_status_callback.new(status="change_meeting_status")
 
                 )
             ]

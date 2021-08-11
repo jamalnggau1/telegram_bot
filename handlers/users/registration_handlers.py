@@ -7,12 +7,12 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
 from data import config
-from keyboards.inline.callback_data import registration_callback
+from keyboards.inline.callback_data import change_meeting_status_callback
 from loader import dp, users_db, pg_db
 from states import Registration_states
 
 
-@dp.callback_query_handler(registration_callback.filter(status="reg"))
+@dp.callback_query_handler(change_meeting_status_callback.filter(status="reg"))
 async def reg_bot(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 

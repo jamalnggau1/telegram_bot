@@ -9,11 +9,12 @@ from aiogram.utils.json import json
 
 import constants
 from data import config
-from keyboards.inline.callback_data import edite_profile_callback, registration_callback
+from keyboards.inline.callback_data import edite_profile_callback, change_meeting_status_callback
 from loader import skills_categories_db, pg_db
 
 from keyboards.inline.inline_buttons import regestration_button, change_profile_or_status_button
 from loader import dp, users_db
+from request_to_server.requests import login
 
 
 @dp.message_handler(CommandStart())
@@ -26,32 +27,19 @@ async def bot_start(message: types.Message, state: FSMContext):
     user_name = "@" + message.from_user.username
     user = await pg_db.select_profile(contacts=user_name)
 
-    # формируем POST запрос для проверки есть ли profile с этим user_id
-    url = "http://127.0.0.1:8000/filling_profile/users/login/"
 
-    payload = json.dumps({
-        "profile": {
-            "contacts": user_id,
-            "machine_token":constants.a
-        }
-    })
-    headers = {
-        'Content-Type': 'application/json'
-    }
 
-    response = requests.request("POST", url, headers=headers, data=payload)
-    print(f'--------handler.users.start response.status_code:{response.status_code}---------------')
-    print(f'--------handler.users.start response.text:{response.text}---------------')
 
-    meeting_status=response.json().get("meeting_status")
 
     # Если в response статус не 200(нет пользователя в базе), предлагаем пользователю зарегаться.
     # Если пользователь в базе есть, сообщения с кнопками в который вшит топен пользователю отправит сервер через АПИ телеграмма
 
     # if user is not None:
 
+    print(f'-----------{login(user_id, constants.a).text}')
+
     # status = 200 - Все хорошо profile есть
-    if response.status_code == 200:
+    if login(user_id, constants.a).status_code == 200:
 
         await message.answer(
             f"Привет 👋 {message.from_user.full_name}! На связи @AndrushaTestbot. Я смотрю ты тут уже не в первый раз. "
@@ -59,7 +47,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                                                                           requests.post(
                                                                               'http://' + config.IP + ':' + config.PORT + '/filling_profile/',
                                                                               params={'contacts': user_name}).url,
-                                                                          "изменить статус поиска встречи",meeting_status)
+                                                                          "изменить статус поиска встречи")
             )
 
     # profile не найден
