@@ -28,7 +28,7 @@ async def meeting(message: types.Message):
         print(f'-------------Весь список до взятия первого: {all_profiles}---------------------')
         first_profile = all_profiles.pop(0)
         print(f'-------------Первый пользователь: {first_profile[1]}---------------------')
-        print(f'-------------Весь список после взятия первого: {all_profiles}---------------------')
+        print(f'-------------Весь список после взятия первого: {all_profiles}----------------------')
 
         selection_list=all_profiles.copy()
 
