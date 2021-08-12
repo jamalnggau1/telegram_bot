@@ -16,8 +16,7 @@ from request_to_server.requests import patch, login
 
 @dp.message_handler(Command("meeting"))
 async def meeting(message: types.Message):
-    await pg_db.create()
-
+    
     await message.answer('Ты выбрал опцию сформировать встречи')
 
     all_profiles = await pg_db.select_all_profiles_for_meeting()
@@ -90,7 +89,7 @@ async def change_meeting_status(callback: CallbackQuery):
                         f"к встречам на этой неделе. ")
     else: text_message = current_meeting_status
 
-    patch('waitting',token)
+    
 
     await callback.message.answer(text_message + "Измени статус на:",
                                   reply_markup=meeting_status_button("waiting", "not ready"))
