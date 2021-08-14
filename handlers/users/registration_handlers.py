@@ -1,4 +1,5 @@
 
+from data import config
 import json
 
 import requests
@@ -6,7 +7,6 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
-from data import config
 from keyboards.inline.callback_data import change_meeting_status_callback
 from loader import dp, users_db, pg_db
 from states import Registration_states
@@ -25,10 +25,10 @@ async def reg_bot(callback: CallbackQuery):
 async def enter_email(message: types.Message, state: FSMContext):
     email = message.text
     full_name = message.from_user.full_name
-    user_name = "@" + message.from_user.username
+    # user_name = "@" + message.from_user.username
     user_id = message.from_user.id
 
-    await pg_db.add_profile(full_name, email, contacts=user_name)
+    # await pg_db.add_profile(full_name, email, contacts=user_name)
 
     url = "http://127.0.0.1:8000/filling_profile/users/"
 
@@ -51,7 +51,7 @@ async def enter_email(message: types.Message, state: FSMContext):
         a = requests.post('http://' + config.IP + ':' + config.PORT + '/filling_profile/',
                           params={'full_name': message.from_user.full_name,
                                   'email': email,
-                                  'contacts': user_name
+                                  'contacts': user_id
                                   })
 
         await message.answer(f"Я записал тебя. Если хочешь дополнить информацию, можешь перейти по ссылке {a.url}")

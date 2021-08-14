@@ -8,6 +8,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.json import json
 
 import constants
+
 from data import config
 from keyboards.inline.callback_data import edite_profile_callback, change_meeting_status_callback
 from loader import skills_categories_db, pg_db
@@ -19,13 +20,13 @@ from request_to_server.requests import login
 
 @dp.message_handler(CommandStart())
 async def bot_start(message: types.Message, state: FSMContext):
-    await pg_db.create()
+    # await pg_db.create()
 
     # подбираем user_id
     user_id = message.from_user.id
 
-    user_name = "@" + message.from_user.username
-    user = await pg_db.select_profile(contacts=user_name)
+    # user_name = "@" + message.from_user.username
+    # user = await pg_db.select_profile(contacts=user_name)
 
 
 
@@ -42,10 +43,12 @@ async def bot_start(message: types.Message, state: FSMContext):
     if login(user_id, constants.a).status_code == 200:
 
         url = f'''http://127.0.0.1:8000/filling_profile/'''
+        text =f'''Привет 👋 {message.from_user.full_name}! На связи @AndrushaTestbot. Я смотрю ты тут уже не в первый раз. Я о тебе кое-что знаю: '''
+        text+=f'''\nEmail📧: {login(user_id, constants.a).json().get("email")}'''
+        text+=f'''\nСтатус поиска собеседника: {login(user_id, constants.a).json().get("meeting_status")}'''
+        text+="\nЧто желаешь?"
 
-        await message.answer(
-            f"Привет 👋 {message.from_user.full_name}! На связи @AndrushaTestbot. Я смотрю ты тут уже не в первый раз. "
-            f"Что желаешь?", reply_markup=change_profile_or_status_button("изменить профиль",
+        await message.answer(text, reply_markup=change_profile_or_status_button("изменить профиль",
                                                                           requests.post(
                                                                               url,
                                                                               params={'token': login(user_id, constants.a).json().get("token"), 'contacts':user_id}).url,
