@@ -46,6 +46,9 @@ async def bot_start(message: types.Message, state: FSMContext):
         text =f'''Привет 👋 {message.from_user.full_name}! На связи @AndrushaTestbot. Я смотрю ты тут уже не в первый раз. Я о тебе кое-что знаю: '''
         text+=f'''\nEmail📧: {login(user_id, constants.a).json().get("email")}'''
         text+=f'''\nСтатус поиска собеседника: {login(user_id, constants.a).json().get("meeting_status")}'''
+        
+        if login(user_id, constants.a).json().get("companion") is not None:
+            text+=f'''\nУ тебя уже есть стреча. Твой собеседник: @{login(user_id, constants.a).json().get("companion")}'''
         text+="\nЧто желаешь?"
 
         await message.answer(text, reply_markup=change_profile_or_status_button("изменить профиль",
