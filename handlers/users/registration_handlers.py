@@ -1,10 +1,10 @@
 
+import constants
+from request_to_server.requests import login
 from data import config
 import json
 
 import requests
-import constants
-from request_to_server.requests import login
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
@@ -51,14 +51,14 @@ async def enter_email(message: types.Message, state: FSMContext):
     if response.status_code == 201:
         await message.answer(f"Ты зарегестрирован.")
 
+        a = requests.post('http://' + config.IP + ':' + config.PORT + '/filling_profile/',
+                          params={'token': login(user_id, constants.a).json().get("token"), 'contacts':user_id})
 
-        url = host+f'''/filling_profile/'''
-        link = requests.post(url, params={'token': login(user_id, constants.a).json().get("token"), 'contacts':user_id}).url
 
 
                                   
 
-        await message.answer(f"Я записал тебя. Если хочешь дополнить информацию, можешь перейти по ссылке {link.url}")
+        await message.answer(f"Я записал тебя. Если хочешь дополнить информацию, можешь перейти по ссылке {a.url}")
         await state.finish()
 
     else:
