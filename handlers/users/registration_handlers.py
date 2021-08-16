@@ -10,6 +10,7 @@ from aiogram.types import CallbackQuery
 from keyboards.inline.callback_data import change_meeting_status_callback
 from loader import dp, users_db, pg_db
 from states import Registration_states
+from constants import host
 
 
 @dp.callback_query_handler(change_meeting_status_callback.filter(status="reg"))
@@ -30,7 +31,7 @@ async def enter_email(message: types.Message, state: FSMContext):
 
     # await pg_db.add_profile(full_name, email, contacts=user_name)
 
-    url = "http://127.0.0.1:8000/filling_profile/users/"
+    url =host+ "/filling_profile/users/"
 
     payload = json.dumps({
         "profile": {

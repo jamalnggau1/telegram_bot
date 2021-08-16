@@ -7,6 +7,9 @@ from aiogram.dispatcher.filters.builtin import CommandStart, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.json import json
 
+
+from constants import host
+
 import constants
 
 from data import config
@@ -42,7 +45,7 @@ async def bot_start(message: types.Message, state: FSMContext):
     # status = 200 - Все хорошо profile есть
     if login(user_id, constants.a).status_code == 200:
 
-        url = f'''http://127.0.0.1:8000/filling_profile/'''
+        url = host+f'''/filling_profile/'''
         text =f'''Привет 👋 {message.from_user.full_name}! На связи @AndrushaTestbot. Я смотрю ты тут уже не в первый раз. Я о тебе кое-что знаю: '''
         text+=f'''\nEmail📧: {login(user_id, constants.a).json().get("email")}'''
         text+=f'''\nСтатус поиска собеседника: {login(user_id, constants.a).json().get("meeting_status")}'''

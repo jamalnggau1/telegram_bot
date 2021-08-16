@@ -1,10 +1,10 @@
 import json
-
+from constants import host
 import requests
 
 
 def login(user_id = None, machine_token=None ):
-    url = "http://127.0.0.1:8000/filling_profile/users/login/"
+    url = host + "/filling_profile/users/login/"
 
     payload = json.dumps({
         "profile": {
@@ -29,7 +29,7 @@ def patch(meeting_status = None, token_value = None):
     payload = json.dumps(payload_dict)
 
 
-    url = "http://127.0.0.1:8000/filling_profile/user/"
+    url = host+"/filling_profile/user/"
 
 
     token = 'Bearer '+token_value
