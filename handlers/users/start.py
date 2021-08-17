@@ -41,7 +41,6 @@ async def bot_start(message: types.Message, state: FSMContext):
     # if user is not None:
 
     print(f'-----------{login(user_id, constants.a).text}')
-
     # status = 200 - Все хорошо profile есть
     if login(user_id, constants.a).status_code == 200:
 
@@ -53,6 +52,7 @@ async def bot_start(message: types.Message, state: FSMContext):
         if login(user_id, constants.a).json().get("companion") is not None:
             text+=f'''\nУ тебя уже есть стреча. Твой собеседник: @{login(user_id, constants.a).json().get("companion")}'''
 
+        print(f'''***********skills:{login(user_id, constants.a).json().get("skills")}''')
         if login(user_id, constants.a).json().get("skills") is not None:
             text+=f'''\nТы выбрал это: {login(user_id, constants.a).json().get("skills")}'''
         text+="\nЧто желаешь?"
