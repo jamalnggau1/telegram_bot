@@ -52,6 +52,9 @@ async def bot_start(message: types.Message, state: FSMContext):
         
         if login(user_id, constants.a).json().get("companion") is not None:
             text+=f'''\nУ тебя уже есть стреча. Твой собеседник: @{login(user_id, constants.a).json().get("companion")}'''
+
+        if login(user_id, constants.a).json().get("skills") is not None:
+            text+=f'''\nТы выбрал это: {login(user_id, constants.a).json().get("skills")}'''
         text+="\nЧто желаешь?"
 
         await message.answer(text, reply_markup=change_profile_or_status_button("изменить профиль",
@@ -66,3 +69,10 @@ async def bot_start(message: types.Message, state: FSMContext):
         await message.answer(
             f"Привет 👋 {message.from_user.full_name}! На связи @AndrushaTestbot, я смотрю ты здесь первый раз. Нам "
             f"нужно пройти  регистрацию️", reply_markup=regestration_button)
+
+    
+
+
+
+
+
