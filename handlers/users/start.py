@@ -54,7 +54,7 @@ async def bot_start(message: types.Message, state: FSMContext):
 
         print(f'''***********skills:{login(user_id, constants.a).json().get("skills")}''')
         if login(user_id, constants.a).json().get("skills") is not None:
-            text+=f'''\nТы выбрал это: {login(user_id, constants.a).json().get("skills")}'''
+            text+=f'''\nТебя интересует: {login(user_id, constants.a).json().get("skills")}'''
         text+="\nЧто желаешь?"
 
         await message.answer(text, reply_markup=change_profile_or_status_button("изменить профиль",
