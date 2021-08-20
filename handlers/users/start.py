@@ -23,29 +23,29 @@ from request_to_server.requests import login
 
 @dp.message_handler(CommandStart())
 async def bot_start(message: types.Message, state: FSMContext):
-    # await pg_db.create()
+    
 
     # подбираем user_id
     user_id = message.from_user.id
 
-    # user_name = "@" + message.from_user.username
-    # user = await pg_db.select_profile(contacts=user_name)
+    
+    # определяем username бота
+    url = "https://api.telegram.org/bot"+f'{config.BOT_TOKEN}'+"/getMe"
+    payload = {}
+    headers = {}
+    bot_username = "@"+ requests.request("POST", url, headers=headers, data=payload).json().get("result").get("username")
 
 
 
 
-
-    # Если в response статус не 200(нет пользователя в базе), предлагаем пользователю зарегаться.
-    # Если пользователь в базе есть, сообщения с кнопками в который вшит топен пользователю отправит сервер через АПИ телеграмма
-
-    # if user is not None:
-
-    print(f'-----------{login(user_id, constants.a).text}')
+    # Если login вернул статус не 200(нет пользователя в базе), предлагаем пользователю зарегаться.
     # status = 200 - Все хорошо profile есть
     if login(user_id, constants.a).status_code == 200:
 
+        
+
         url = host+f'''/filling_profile/'''
-        text =f'''Привет 👋 {message.from_user.full_name}! На связи @AndrushaTestbot. Я смотрю ты тут уже не в первый раз. Я о тебе кое-что знаю: '''
+        text =f'''Привет 👋 {message.from_user.full_name}! На связи {bot_username}. Я смотрю ты тут уже не в первый раз. Я о тебе кое-что знаю: '''
         text+=f'''\nEmail📧: {login(user_id, constants.a).json().get("email")}'''
         text+=f'''\nСтатус поиска собеседника: {login(user_id, constants.a).json().get("meeting_status")}'''
         
@@ -67,7 +67,7 @@ async def bot_start(message: types.Message, state: FSMContext):
     # profile не найден
     else:
         await message.answer(
-            f"Привет 👋 {message.from_user.full_name}! На связи @AndrushaTestbot, я смотрю ты здесь первый раз. Нам "
+            f"Привет 👋 {message.from_user.full_name}! На связи {bot_username}, я смотрю ты здесь первый раз. Нам "
             f"нужно пройти  регистрацию️", reply_markup=regestration_button)
 
     
