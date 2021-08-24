@@ -1,19 +1,21 @@
-import sqlite3
 
+from aiogram.types.callback_query import CallbackQuery
 import requests as requests
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.json import json
-
+from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback
 
 from constants import host
+
+import schedule, time
 
 import constants
 
 from data import config
-from keyboards.inline.callback_data import edite_profile_callback, change_meeting_status_callback
+from keyboards.inline.callback_data import checking_meeting
 from loader import skills_categories_db, pg_db
 
 from keyboards.inline.inline_buttons import regestration_button, change_profile_or_status_button
@@ -24,7 +26,6 @@ from request_to_server.requests import login
 @dp.message_handler(CommandStart())
 async def bot_start(message: types.Message, state: FSMContext):
     
-
     # подбираем user_id
     user_id = message.from_user.id
 
@@ -69,6 +70,33 @@ async def bot_start(message: types.Message, state: FSMContext):
         await message.answer(
             f"Привет 👋 {message.from_user.full_name}! На связи {bot_username}, я смотрю ты здесь первый раз. Нам "
             f"нужно пройти  регистрацию️", reply_markup=regestration_button)
+
+    
+
+
+
+# def send_messange():
+#     # ваша функция отправки сообщений
+    
+#     print("Отправка завершена!")
+
+# schedule.every().day.at("15:26").do(send_messange)
+
+# while True: # этот цикл отсчитывает время. Он обязателен.
+#     schedule.run_pending()
+#     time.sleep(1)
+
+
+
+
+
+
+
+
+
+
+
+
 
     
 

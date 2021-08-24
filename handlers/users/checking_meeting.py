@@ -1,22 +1,33 @@
 
-import types
-from aiogram.dispatcher.filters import Command
-from handlers.users.meeting import meeting_status_waiting
-from aiogram.types.inline_keyboard import InlineKeyboardButton, InlineKeyboardMarkup
-import requests
-from data import config
-from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback
-from loader import dp
-from keyboards.inline.callback_data import checking_meeting
 from aiogram.types.callback_query import CallbackQuery
-from keyboards.inline.callback_data import change_meeting_status_callback
+import requests as requests
+from aiogram import types
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.builtin import CommandStart, Command
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils.json import json
+from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback
+
+from constants import host
+
+import schedule, time
+
+import constants
+
+from data import config
+from keyboards.inline.callback_data import checking_meeting
+from loader import skills_categories_db, pg_db
+
+from keyboards.inline.inline_buttons import regestration_button, change_profile_or_status_button
+from loader import dp, users_db
+from request_to_server.requests import login
 
 
 
 
 
-
-async def meeting(message: types.Message):
+@dp.message_handler(Command("chack"))
+async def meetingg(message: types.Message):
 
     text = f'🙌 Привет! Уже успел пообщаться с собеседником?'
 
