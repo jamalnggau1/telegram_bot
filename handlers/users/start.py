@@ -92,7 +92,92 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 
 
+@dp.message_handler(Command("chack"))
+async def meetingg(message: types.Message):
 
+    text = f'🙌 Привет! Уже успел пообщаться с собеседником?'
+
+    a= InlineKeyboardMarkup(
+        row_width=3,
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text='Да, всё гуд',
+                    callback_data=checking_meeting.new(status="ok_good!"),
+
+                ),
+                InlineKeyboardButton(
+                    text='Нет, ещё не общались',
+                    callback_data=checking_meeting.new(status="not_communicate")
+
+                ),
+                InlineKeyboardButton(
+                    text='Парнёр не отвечает',
+                    callback_data=checking_meeting.new(status="not_answer")
+
+                )
+            ]
+        ]
+    )
+
+    url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}&reply_markup={a}'
+
+
+    payload={}
+    headers = {}
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+
+
+
+
+
+
+
+
+
+
+
+    @dp.callback_query_handler(checking_meeting.filter(status="ok_good!"))
+    async def checking_meeting_ok_good(callback: CallbackQuery):
+
+
+        await callback.answer(cache_time=10)
+
+        print(f'***************AAAAAAAAA**********************')
+
+
+
+        text = f'😎 Отлично! Хочешь найдём ещё одного собеседника?'
+
+        a= InlineKeyboardMarkup(
+            row_width=2,
+            inline_keyboard=[
+                [
+                    InlineKeyboardButton(
+                        text='Да',
+                        callback_data=checking_meeting.new(status="ok,_good!"),
+
+                    ),
+                    InlineKeyboardButton(
+                        text='Нет',
+                        callback_data=checking_meeting.new(status="not_communicate")
+
+                    ),
+                
+                ]
+            ]
+        )
+
+
+        url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}&reply_markup={a}'
+
+
+        payload={}
+        headers = {}
+
+        response = requests.request("POST", url, headers=headers, data=payload)
 
 
 

@@ -79,7 +79,6 @@ async def meetingg(message: types.Message):
 
         await callback.answer(cache_time=10)
 
-        print(f'***************AAAAAAAAA**********************')
 
 
 
@@ -112,3 +111,65 @@ async def meetingg(message: types.Message):
         headers = {}
 
         response = requests.request("POST", url, headers=headers, data=payload)
+
+
+
+
+
+        @dp.callback_query_handler(checking_meeting.filter(status="not_communicate"))
+        async def checking_meeting_not_communicate(callback: CallbackQuery):
+
+            await callback.answer(cache_time=10)
+
+            text = f'Подожди чуть-чуть, мы напомним о встрече собеседнику'
+
+            url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}'
+
+
+            payload={}
+            headers = {}
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+
+
+
+
+
+        @dp.callback_query_handler(checking_meeting.filter(status="not_answer"))
+        async def checking_meeting_not_answer(callback: CallbackQuery):
+
+
+            await callback.answer(cache_time=10)
+
+
+
+
+            text = f'🧙‍♀️ Может тогда поменяем его?'
+
+            a= InlineKeyboardMarkup(
+                row_width=2,
+                inline_keyboard=[
+                    [
+                        InlineKeyboardButton(
+                            text='Я подожду',
+                            callback_data=checking_meeting.new(status="ok,_good!"),
+
+                        ),
+                        InlineKeyboardButton(
+                            text='«Поменять»',
+                            callback_data=checking_meeting.new(status="not_communicate")
+
+                        ),
+                    
+                    ]
+                ]
+            )
+
+
+            url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}&reply_markup={a}'
+
+
+            payload={}
+            headers = {}
+
+            response = requests.request("POST", url, headers=headers, data=payload)
