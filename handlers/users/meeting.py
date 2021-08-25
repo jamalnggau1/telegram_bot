@@ -125,14 +125,3 @@ async def meeting_status_not_ready(callback: CallbackQuery):
     else:
         await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
 
-
-
-
-
-
-
-
-
-
-
-
