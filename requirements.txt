@@ -2,3 +2,4 @@ aiogram
 environs
 asyncpg
 requests
+schedule
