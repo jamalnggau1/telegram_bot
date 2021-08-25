@@ -1,5 +1,7 @@
 from aiogram.types.callback_query import CallbackQuery
 import requests as requests
+import schedule
+import time
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart, Command
@@ -66,58 +68,10 @@ async def bot_start(message: types.Message, state: FSMContext):
             f"нужно пройти  регистрацию️", reply_markup=regestration_button)
 
 
-# def send_messange():
-#     # ваша функция отправки сообщений
-
-#     print("Отправка завершена!")
-
-# schedule.every().day.at("15:26").do(send_messange)
-
-# while True: # этот цикл отсчитывает время. Он обязателен.
-#     schedule.run_pending()
-#     time.sleep(1)
 
 
 
 
-
-
-
-
-
-@dp.message_handler(Command("chack"))
-async def meetingg(message: types.Message):
-    text = f'🙌 Привет! Уже успел пообщаться с собеседником?'
-
-    a = InlineKeyboardMarkup(
-        row_width=3,
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text='Да, всё гуд',
-                    callback_data=checking_meeting.new(status="ok_good!"),
-
-                ),
-                InlineKeyboardButton(
-                    text='Нет, ещё не общались',
-                    callback_data=checking_meeting.new(status="not_communicate")
-
-                ),
-                InlineKeyboardButton(
-                    text='Парнёр не отвечает',
-                    callback_data=checking_meeting.new(status="not_answer")
-
-                )
-            ]
-        ]
-    )
-
-    url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}&reply_markup={a}'
-
-    payload = {}
-    headers = {}
-
-    response = requests.request("POST", url, headers=headers, data=payload)
 
     @dp.callback_query_handler(checking_meeting.filter(status="ok_good!"))
     async def checking_meeting_ok_good(callback: CallbackQuery):
@@ -219,4 +173,14 @@ async def meetingg(message: types.Message):
         async def checking_meeting_status_change_partner(callback: CallbackQuery):
             await callback.answer(cache_time=10)
 
-            
+            url = host +"/filling_profile/stop_meet_change_partner/"
+            print(f'***********{callback.from_user.id}')
+            payload = json.dumps({
+            "profile_id": {callback.from_user.id},
+            "machine_token": {constants.a}
+            })
+            headers = {
+            'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
