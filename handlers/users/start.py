@@ -1,28 +1,20 @@
-from aiogram.types.callback_query import CallbackQuery
+
 import requests as requests
-import schedule
-import time
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.builtin import CommandStart, Command
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.utils.json import json
-from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback,meeting_status_callback
+from aiogram.dispatcher.filters.builtin import  Command
 
 from constants import host
 
 import constants
 
 from data import config
-from keyboards.inline.callback_data import checking_meeting
-from loader import skills_categories_db, pg_db
-
 from keyboards.inline.inline_buttons import regestration_button, change_profile_or_status_button
-from loader import dp, users_db
+from loader import dp
 from request_to_server.requests import login
 
 
-@dp.message_handler(CommandStart())
+@dp.message_handler(Command("profile"))
 async def bot_start(message: types.Message, state: FSMContext):
     # подбираем user_id
     user_id = message.from_user.id
@@ -52,8 +44,7 @@ async def bot_start(message: types.Message, state: FSMContext):
         text += "\nЧто желаешь?"
 
         await message.answer(text, reply_markup=change_profile_or_status_button("изменить профиль",
-                                                                                requests.post(
-                                                                                    url,
+                                                                                requests.post(url,
                                                                                     params={'token': login(user_id,
                                                                                                            constants.a).json().get(
                                                                                         "token"),
@@ -66,121 +57,3 @@ async def bot_start(message: types.Message, state: FSMContext):
         await message.answer(
             f"Привет 👋 {message.from_user.full_name}! На связи {bot_username}, я смотрю ты здесь первый раз. Нам "
             f"нужно пройти  регистрацию️", reply_markup=regestration_button)
-
-
-
-
-
-
-
-    @dp.callback_query_handler(checking_meeting.filter(status="ok_good!"))
-    async def checking_meeting_ok_good(callback: CallbackQuery):
-        await callback.answer(cache_time=10)
-
-        text = f'😎 Отлично! Хочешь найдём ещё одного собеседника?'
-
-        a = InlineKeyboardMarkup(
-            row_width=2,
-            inline_keyboard=[
-                [
-                    InlineKeyboardButton(
-                        text='Да',
-                        callback_data=meeting_status_callback.new(status="meeting_status = waiting"),
-
-                    ),
-                    InlineKeyboardButton(
-                        text='Нет',
-                        callback_data=meeting_status_callback.new(status="meeting_status = not ready")
-
-                    ),
-
-                ]
-            ]
-        )
-
-        url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}&reply_markup={a}'
-
-        payload = {}
-        headers = {}
-
-        response = requests.request("POST", url, headers=headers, data=payload)
-
-        @dp.callback_query_handler(checking_meeting.filter(status="not_communicate"))
-        async def checking_meeting_not_communicate(callback: CallbackQuery):
-            await callback.answer(cache_time=10)
-
-            text = f'Подожди чуть-чуть, мы напомним о встрече собеседнику'
-
-            url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}'
-
-            payload = {}
-            headers = {}
-
-            response = requests.request("POST", url, headers=headers, data=payload)
-
-        @dp.callback_query_handler(checking_meeting.filter(status="not_answer"))
-        async def checking_meeting_not_answer(callback: CallbackQuery):
-            await callback.answer(cache_time=10)
-
-            text = f'🧙‍♀️ Может тогда поменяем его?'
-
-            a = InlineKeyboardMarkup(
-                row_width=2,
-                inline_keyboard=[
-                    [
-                        InlineKeyboardButton(
-                            text='Я подожду',
-                            callback_data=checking_meeting.new(status="I_wait"),
-
-                        ),
-                        InlineKeyboardButton(
-                            text='«Поменять»',
-                            callback_data=checking_meeting.new(status="change_partner")
-
-                        ),
-
-                    ]
-                ]
-            )
-
-            url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}&reply_markup={a}'
-
-            payload = {}
-            headers = {}
-
-            response = requests.request("POST", url, headers=headers, data=payload)
-
-
-
-
-
-
-        @dp.callback_query_handler(checking_meeting.filter(status="I_wait"))
-        async def checking_meeting_I_wait(callback: CallbackQuery):
-            await callback.answer(cache_time=10)
-
-            text = f'Хорошо, надеемся собеседник ответит.'
-            url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}'
-
-            payload = {}
-            headers = {}
-
-            response = requests.request("POST", url, headers=headers, data=payload)
-
-
-
-        @dp.callback_query_handler(checking_meeting.filter(status="change_partner"))
-        async def checking_meeting_status_change_partner(callback: CallbackQuery):
-            await callback.answer(cache_time=10)
-
-            url = host +"/filling_profile/stop_meet_change_partner/"
-            print(f'***********{callback.from_user.id}')
-            payload = json.dumps({
-            "profile_id": {callback.from_user.id},
-            "machine_token": {constants.a}
-            })
-            headers = {
-            'Content-Type': 'application/json'
-            }
-
-            response = requests.request("POST", url, headers=headers, data=payload)

@@ -10,7 +10,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
 from keyboards.inline.callback_data import change_meeting_status_callback
-from loader import dp, users_db, pg_db
+from loader import dp
 from states import Registration_states
 from constants import host
 
