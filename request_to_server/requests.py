@@ -44,7 +44,7 @@ def patch(meeting_status = None, token_value = None):
 
 
 def leave_feedback(profile_id, machine_token, feedback):
-    url = host+"filling_profile/leave_feedback/"
+    url = host+"/filling_profile/leave_feedback/"
 
     payload = json.dumps({
         "profile_id": profile_id,
@@ -56,6 +56,6 @@ def leave_feedback(profile_id, machine_token, feedback):
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
-    return response.status_code
+    return response
 
 

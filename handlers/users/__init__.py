@@ -4,3 +4,4 @@ from . import registration_handlers
 from . import meeting
 from . import checking_meeting
 from . import choose_skills
+from . import feedback
