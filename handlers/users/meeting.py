@@ -7,7 +7,7 @@ from aiogram.types import CallbackQuery
 
 import constants
 from filters.prefix_filter import isChangeMeetingStatus
-from handlers.users.start import bot_start
+from handlers.users.profile import bot_start
 from keyboards.inline.callback_data import change_meeting_status_callback, meeting_status_callback
 from keyboards.inline.inline_buttons import meeting_status_button
 from loader import dp, pg_db, bot

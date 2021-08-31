@@ -54,10 +54,6 @@ async def enter_email(message: types.Message, state: FSMContext):
         a = requests.post('http://' + config.IP + ':' + config.PORT + '/filling_profile/',
                           params={'token': login(user_id, constants.a).json().get("token"), 'contacts':user_id})
 
-
-
-                                  
-
         await message.answer(f"Я записал тебя. Если хочешь дополнить информацию, можешь перейти по ссылке {a.url}")
         await state.finish()
 

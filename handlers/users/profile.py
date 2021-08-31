@@ -2,14 +2,15 @@
 import requests as requests
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.builtin import  Command
+from aiogram.dispatcher.filters.builtin import Command
 
 from constants import host
 
 import constants
 
 from data import config
-from keyboards.inline.inline_buttons import regestration_button, change_profile_or_status_button
+from keyboards.inline.callback_data import change_meeting_status_callback
+from keyboards.inline.inline_buttons import one_button, change_profile_or_status_button
 from loader import dp
 from request_to_server.requests import login
 
@@ -56,4 +57,4 @@ async def bot_start(message: types.Message, state: FSMContext):
     else:
         await message.answer(
             f"Привет 👋 {message.from_user.full_name}! На связи {bot_username}, я смотрю ты здесь первый раз. Нам "
-            f"нужно пройти  регистрацию️", reply_markup=regestration_button)
+            f"нужно пройти  регистрацию️", reply_markup=one_button(text_btn="регистрация",callback_data=change_meeting_status_callback.new(status="reg"), url=None))
