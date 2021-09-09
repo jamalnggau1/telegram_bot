@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback, \
-    meeting_status_callback
+    meeting_status_callback, just_callbackdata
 
 
 def one_button(text_btn=None, callback_data=None, url=None):
@@ -56,7 +56,7 @@ def change_profile_or_status_button(text_btn1, url, text_btn2):
 
 def meeting_status_button(text_btn1, text_btn2):
     return InlineKeyboardMarkup(
-        row_width=2,
+        row_width=1,
         inline_keyboard=[
             [
 
@@ -64,12 +64,46 @@ def meeting_status_button(text_btn1, text_btn2):
                     text=text_btn1,
                     callback_data=meeting_status_callback.new(status="meeting_status = waiting"),
 
-                ),
+                )
+            ],
+            [
                 InlineKeyboardButton(
                     text=text_btn2,
                     callback_data=meeting_status_callback.new(status="meeting_status = not ready"),
 
                 )
-            ]
+            ],
+
+        ]
+    )
+
+
+def help_keyboard():
+    return InlineKeyboardMarkup(
+        row_width=1,
+        inline_keyboard=[
+            [
+
+                InlineKeyboardButton(
+                    text="Как работает бот?",
+                    callback_data=just_callbackdata.new(status="just"),
+
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="Подсказки для первой встречи",
+                    callback_data=just_callbackdata.new(status="just"),
+
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="Задай свой вопрос",
+                    callback_data=just_callbackdata.new(status="just"),
+
+                )
+            ],
+
         ]
     )
