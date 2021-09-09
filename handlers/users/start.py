@@ -2,7 +2,7 @@
 import requests as requests
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.builtin import Command
+from aiogram.dispatcher.filters.builtin import Command, CommandStart
 
 from constants import host
 
@@ -15,8 +15,8 @@ from loader import dp
 from request_to_server.requests import login
 
 
-@dp.message_handler(Command("profile"))
-async def profile(message: types.Message, state: FSMContext):
+@dp.message_handler(CommandStart())
+async def bot_start(message: types.Message, state: FSMContext):
     # подбираем user_id
     user_id = message.from_user.id
 
@@ -31,12 +31,8 @@ async def profile(message: types.Message, state: FSMContext):
     # status = 200 - Все хорошо profile есть
     if login(user_id, constants.a).status_code == 200:
 
-
-
-
-
         url = host + f'''/filling_profile/'''
-        text = f'''Привет 👋 {message.from_user.full_name}! На связи {bot_username}. Ты здесь не первый раз, не так ли?\nЯ о тебе кое-что помню: '''
+        text = f'''Привет 👋 {message.from_user.full_name}! На связи {bot_username}. Я смотрю ты тут уже не в первый раз. Я о тебе кое-что знаю: '''
         text += f'''\nEmail📧: {login(user_id, constants.a).json().get("email")}'''
         text += f'''\nСтатус поиска собеседника: {login(user_id, constants.a).json().get("meeting_status")}'''
 
@@ -46,7 +42,7 @@ async def profile(message: types.Message, state: FSMContext):
         print(f'''***********skills:{login(user_id, constants.a).json().get("skills")}''')
         if login(user_id, constants.a).json().get("skills") is not None:
             text += f'''\nТебя интересует: {login(user_id, constants.a).json().get("skills")}'''
-        text += "\nЧто бы ты хотел изменить?"
+        text += "\nЧто желаешь?"
 
         await message.answer(text, reply_markup=change_profile_or_status_button("изменить профиль",
                                                                                 requests.post(url,
@@ -60,7 +56,17 @@ async def profile(message: types.Message, state: FSMContext):
     # profile не найден
     else:
         await message.answer(
-            f"Привет 👋 {message.from_user.full_name}! На связи {bot_username}, я смотрю ты здесь первый раз. Нам "
-            f"нужно пройти  регистрацию️", reply_markup=one_button(text_btn="регистрация",callback_data=change_meeting_status_callback.new(status="reg"), url=None))
+            f'Привет 👋. На связи {bot_username}, позволь рассказать немного о себе Каждую неделю я  буду искать тебе '
+            f"случайного собеседника, чтобы вместе делать интересные вещи: изучать язык, обсуждать кейсы, найти что-то "
+            f"свое или просто развлечься вечером. Теперь пойдем за мной, я расскажу, что делать, чтобы скорее найти собеседника🧙‍♂")
+
+
+
+
+
+
+
+
+
 
 
