@@ -80,46 +80,57 @@ async def change_meeting_status(callback: CallbackQuery):
         text_message = (f"Твой текущий статус: {current_meeting_status}. Это означает, что пара тебе подобрана, "
                         f"и встреча сейчас в самом разгаре. ")
     elif current_meeting_status == "waitting":
-        text_message = (f"Твой текущий статус: {current_meeting_status}. Это означает, что мы пытаемся "
-                        f"подобрать для тебя подходящую пару. ")
+        if patch('not ready', token) == 200:
+            text_message = """Окей, пока тебе не нужен собеседник. Дай нам знать, если захочешь его найти:)"""
+
+        else:
+            text_message = f"Возникла ошибка, обратись в поддержку"
+
     elif current_meeting_status == "not ready":
-        text_message = (f"Твой текущий статус: {current_meeting_status}. Это означает, что ты не готов "
-                        f"к встречам на этой неделе. ")
-    else: text_message = current_meeting_status
+        if patch('waitting', token) == 200:
+            text_message = """Окей, теперь ты ждешь собеседника. Мы займемся поиском прямо сейчас и напишем, когда найдем тебе собеседника:)"""
 
-    
-
-    await callback.message.answer(text_message + "Измени статус на:",
-                                  reply_markup=meeting_status_button("waiting", "not ready"))
+        else:
+            text_message = f"Возникла ошибка, обратись в поддержку"
 
 
 
 
-@dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = waiting"))
-async def meeting_status_waiting(callback: CallbackQuery):
-    await callback.answer(cache_time=10)
 
-    token = login(callback.from_user.id, constants.a).json().get("token")
-
-    if patch('waitting', token)==200:
-        current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
-        await callback.message.answer(f"Твой статус изменен на {current_meeting_status}")
-
-    else:
-        await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
+    await callback.message.answer(text_message)
 
 
 
-@dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = not ready"))
-async def meeting_status_not_ready(callback: CallbackQuery):
-    await callback.answer(cache_time=10)
+#
+# @dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = waiting"))
+# async def meeting_status_waiting(callback: CallbackQuery):
+#     await callback.answer(cache_time=10)
+#
+#     token = login(callback.from_user.id, constants.a).json().get("token")
+#
+#     if patch('waitting', token)==200:
+#         current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
+#         await callback.message.answer(f"Твой статус изменен на {current_meeting_status}")
+#
+#     else:
+#         await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
+#
+#
+#
+# @dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = not ready"))
+# async def meeting_status_not_ready(callback: CallbackQuery):
+#     await callback.answer(cache_time=10)
+#
+#     token = login(callback.from_user.id, constants.a).json().get("token")
+#
+#     if patch('not ready', token) == 200:
+#         current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
+#         await callback.message.answer(f"Твой статус изменен на {current_meeting_status}")
+#
+#     else:
+#         await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
+#
+#
 
-    token = login(callback.from_user.id, constants.a).json().get("token")
 
-    if patch('not ready', token) == 200:
-        current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
-        await callback.message.answer(f"Твой статус изменен на {current_meeting_status}")
-
-    else:
-        await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
 
