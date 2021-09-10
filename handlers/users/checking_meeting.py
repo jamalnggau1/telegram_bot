@@ -10,42 +10,9 @@ import constants
 from constants import host
 from data import config
 from keyboards.inline.callback_data import checking_meeting, meeting_status_callback
+from keyboards.inline.inline_buttons import leave_feedback_buttons
 from loader import dp
 
-
-# @dp.message_handler(Command("chack"))
-# async def meetingg(message: types.Message):
-#     text = f'🙌 Привет! Уже успел пообщаться с собеседником?'
-#
-#     a = InlineKeyboardMarkup(
-#         row_width=3,
-#         inline_keyboard=[
-#             [
-#                 InlineKeyboardButton(
-#                     text='Да, всё гуд',
-#                     callback_data=checking_meeting.new(status="ok_good!"),
-#
-#                 ),
-#                 InlineKeyboardButton(
-#                     text='Нет, ещё не общались',
-#                     callback_data=checking_meeting.new(status="not_communicate")
-#
-#                 ),
-#                 InlineKeyboardButton(
-#                     text='Парнёр не отвечает',
-#                     callback_data=checking_meeting.new(status="not_answer")
-#
-#                 )
-#             ]
-#         ]
-#     )
-#
-#     url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={336006405}&text={text}&reply_markup={a}'
-#
-#     payload = {}
-#     headers = {}
-#
-#     response = requests.request("POST", url, headers=headers, data=payload)
 
 
 
@@ -53,33 +20,37 @@ from loader import dp
 async def checking_meeting_ok_good(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    text = f'😎 Отлично! Хочешь найдём ещё одного собеседника?'
+    user_telegram=callback.from_user.id
 
-    a = InlineKeyboardMarkup(
-        row_width=2,
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text='Да',
-                    callback_data=meeting_status_callback.new(status="meeting_status = waiting"),
 
-                ),
-                InlineKeyboardButton(
-                    text='Нет',
-                    callback_data=meeting_status_callback.new(status="meeting_status = not ready")
+    url = host+"/filling_profile/getfeedbackfromuser/"
 
-                ),
-
-            ]
-        ]
-    )
-
-    url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={callback.from_user.id}&text={text}&reply_markup={a}'
-
-    payload = {}
-    headers = {}
-
+    payload = json.dumps({
+        "user_telegram": user_telegram
+    })
+    headers = {'Content-Type': 'application/json'}
     response = requests.request("POST", url, headers=headers, data=payload)
+
+    if response.status_code == 200:
+        if response.json() == 'false':
+            await callback.message.answer('Замечательно✨ Как бы ты оценил встречу?',reply_markup=leave_feedback_buttons())
+        elif response.json() == 'true':
+            await callback.message.answer('Твой собеседник уже оценил встречу. А что думаешь ты?', reply_markup=leave_feedback_buttons())
+        elif response.json() == 'many meets':
+            await callback.message.answer('У тебя слишком много активных встреч. Обратись в поддержку')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @dp.callback_query_handler(checking_meeting.filter(status="not_communicate"))

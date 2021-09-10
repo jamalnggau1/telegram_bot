@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback, \
-    meeting_status_callback, help_callbackdata
+    meeting_status_callback, help_callbackdata, meeting_feedback
 
 
 def one_button(text_btn=None, callback_data=None, url=None):
@@ -105,5 +105,39 @@ def help_keyboard():
                 )
             ],
 
+        ]
+    )
+
+def leave_feedback_buttons():
+    return InlineKeyboardMarkup(
+        row_width=5,
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text='👎',
+                    callback_data=meeting_feedback.new(status="1")
+
+                ),
+                InlineKeyboardButton(
+                    text='😒',
+                    callback_data=meeting_feedback.new(status="2")
+
+                ),
+                InlineKeyboardButton(
+                    text='🙂',
+                    callback_data=meeting_feedback.new(status="3")
+
+                ),
+
+                InlineKeyboardButton(
+                    text='😍',
+                    callback_data=meeting_feedback.new(status="4")
+                ),
+                InlineKeyboardButton(
+                    text='👍',
+                    callback_data=meeting_feedback.new(status="5")
+                )
+
+            ]
         ]
     )
