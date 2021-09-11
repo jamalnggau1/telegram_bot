@@ -1,1 +1,1 @@
-from states.registration_states import Registration_states
+from states.registration_states import Registration_states, Meeting_states

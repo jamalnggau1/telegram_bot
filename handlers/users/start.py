@@ -14,7 +14,7 @@ from keyboards.inline.callback_data import change_meeting_status_callback
 from keyboards.inline.inline_buttons import one_button, change_profile_or_status_button
 from loader import dp
 from request_to_server.requests import login
-from states import Registration_states
+from states import Registration_states, Meeting_states
 
 
 @dp.message_handler(CommandStart())
@@ -64,6 +64,7 @@ async def bot_start(message: types.Message, state: FSMContext):
 
         await message.answer(f"Первым делом, напиши свою почту для регистрации⏬")
 
+        # await Meeting_states.promeshytok_state.set()
         await Registration_states.enter_email.set()
 
 

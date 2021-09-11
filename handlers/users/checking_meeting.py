@@ -9,11 +9,10 @@ from aiogram.types.callback_query import CallbackQuery
 import constants
 from constants import host
 from data import config
-from keyboards.inline.callback_data import checking_meeting, meeting_status_callback
+from keyboards.inline.callback_data import checking_meeting, meeting_status_callback, meeting_feedback_wednesday
 from keyboards.inline.inline_buttons import leave_feedback_buttons
 from loader import dp
-
-
+from states.registration_states import Meeting_states
 
 
 @dp.callback_query_handler(checking_meeting.filter(status="ok_good!"))
@@ -33,38 +32,26 @@ async def checking_meeting_ok_good(callback: CallbackQuery):
 
     if response.status_code == 200:
         if response.json() == 'false':
-            await callback.message.answer('Замечательно✨ Как бы ты оценил встречу?',reply_markup=leave_feedback_buttons())
+            await callback.message.answer('Замечательно✨ Как бы ты оценил встречу?',reply_markup=leave_feedback_buttons(meeting_feedback_wednesday))
+
         elif response.json() == 'true':
-            await callback.message.answer('Твой собеседник уже оценил встречу. А что думаешь ты?', reply_markup=leave_feedback_buttons())
+            await callback.message.answer('Твой собеседник уже оценил встречу. А что думаешь ты?', reply_markup=leave_feedback_buttons(meeting_feedback_wednesday))
         elif response.json() == 'many meets':
             await callback.message.answer('У тебя слишком много активных встреч. Обратись в поддержку')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-@dp.callback_query_handler(checking_meeting.filter(status="not_communicate"))
-async def checking_meeting_not_communicate(callback: CallbackQuery):
-    await callback.answer(cache_time=10)
-
-    text = f'Подожди чуть-чуть, мы напомним о встрече собеседнику'
-
-    url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={callback.from_user.id}&text={text}'
-
-    payload = {}
-    headers = {}
-
-    response = requests.request("POST", url, headers=headers, data=payload)
+# @dp.callback_query_handler(checking_meeting.filter(status="not_communicate"))
+# async def checking_meeting_not_communicate(callback: CallbackQuery):
+#     await callback.answer(cache_time=10)
+#
+#     text = f'Подожди чуть-чуть, мы напомним о встрече собеседнику'
+#
+#     url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={callback.from_user.id}&text={text}'
+#
+#     payload = {}
+#     headers = {}
+#
+#     response = requests.request("POST", url, headers=headers, data=payload)
 
 
 @dp.callback_query_handler(checking_meeting.filter(status="not_answer"))

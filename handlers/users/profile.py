@@ -9,6 +9,7 @@ from constants import host
 import constants
 
 from data import config
+from states import Meeting_states
 from text_constants import change_profile, change_meeting_status
 from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback
 from keyboards.inline.inline_buttons import one_button, change_profile_or_status_button
@@ -56,9 +57,6 @@ async def profile(message: types.Message, state: FSMContext):
             await message.answer(text, reply_markup=change_profile_or_status_button(change_profile,
                   requests.post(url, params={'token': request_from_login.json().get("token"),
                                              'contacts': user_id}).url, change_meeting_status))
-
-
-
 
     # profile не найден
     else:

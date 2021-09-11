@@ -1,7 +1,8 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils.callback_data import CallbackData
 
 from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback, \
-    meeting_status_callback, help_callbackdata, meeting_feedback
+    meeting_status_callback, help_callbackdata, meeting_feedback_wednesday
 
 
 def one_button(text_btn=None, callback_data=None, url=None):
@@ -108,36 +109,57 @@ def help_keyboard():
         ]
     )
 
-def leave_feedback_buttons():
+
+def leave_feedback_buttons(callback_data:CallbackData):
     return InlineKeyboardMarkup(
         row_width=5,
         inline_keyboard=[
             [
                 InlineKeyboardButton(
                     text='👎',
-                    callback_data=meeting_feedback.new(status="1")
+                    callback_data=callback_data.new(status="1")
 
                 ),
                 InlineKeyboardButton(
                     text='😒',
-                    callback_data=meeting_feedback.new(status="2")
+                    callback_data=callback_data.new(status="2")
 
                 ),
                 InlineKeyboardButton(
                     text='🙂',
-                    callback_data=meeting_feedback.new(status="3")
+                    callback_data=callback_data.new(status="3")
 
                 ),
 
                 InlineKeyboardButton(
                     text='😍',
-                    callback_data=meeting_feedback.new(status="4")
+                    callback_data=callback_data.new(status="4")
                 ),
                 InlineKeyboardButton(
                     text='👍',
-                    callback_data=meeting_feedback.new(status="5")
+                    callback_data=callback_data.new(status="5")
                 )
 
+            ]
+        ]
+    )
+
+
+def two_buttons(first_button_text, first_button_callback, second_button_text, second_button_callback):
+    return InlineKeyboardMarkup(
+        row_width=1,
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=first_button_text,
+                    callback_data=first_button_callback,
+
+                ),
+                InlineKeyboardButton(
+                    text=second_button_text,
+                    callback_data=second_button_callback,
+
+                )
             ]
         ]
     )

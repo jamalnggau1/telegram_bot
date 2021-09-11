@@ -2,14 +2,16 @@ import datetime
 from random import randint
 
 from aiogram import types
+from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.types import CallbackQuery
 
 import constants
 from keyboards.inline.callback_data import change_meeting_status_callback, meeting_status_callback
-from keyboards.inline.inline_buttons import meeting_status_button
+from keyboards.inline.inline_buttons import meeting_status_button, two_buttons
 from loader import dp, pg_db
 from request_to_server.requests import patch, login
+from states import Meeting_states
 
 
 @dp.message_handler(Command("meeting"))
@@ -61,6 +63,12 @@ async def meeting(message: types.Message):
         if meeting_success == True:
             print(f'-------------Удаляем пользователя: {all_profiles[second_profile_number]}---------------------')
             all_profiles.pop(second_profile_number)
+
+
+
+
+
+
 
 
 
