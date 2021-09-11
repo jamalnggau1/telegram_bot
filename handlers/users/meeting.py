@@ -109,36 +109,35 @@ async def change_meeting_status(callback: CallbackQuery):
 
 
 
-#
-# @dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = waiting"))
-# async def meeting_status_waiting(callback: CallbackQuery):
-#     await callback.answer(cache_time=10)
-#
-#     token = login(callback.from_user.id, constants.a).json().get("token")
-#
-#     if patch('waitting', token)==200:
-#         current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
-#         await callback.message.answer(f"Твой статус изменен на {current_meeting_status}")
-#
-#     else:
-#         await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
-#
-#
-#
-# @dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = not ready"))
-# async def meeting_status_not_ready(callback: CallbackQuery):
-#     await callback.answer(cache_time=10)
-#
-#     token = login(callback.from_user.id, constants.a).json().get("token")
-#
-#     if patch('not ready', token) == 200:
-#         current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
-#         await callback.message.answer(f"Твой статус изменен на {current_meeting_status}")
-#
-#     else:
-#         await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
-#
-#
+# Используется в воскресенье, когда нужно в любом случае поставить статус waiting
+@dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = waiting"))
+async def meeting_status_waiting(callback: CallbackQuery):
+    await callback.answer(cache_time=10)
+
+    token = login(callback.from_user.id, constants.a).json().get("token")
+
+    if patch('waitting', token)==200:
+        await callback.message.answer(f"Хорошо Мы постараемся найти тебе собеседника в понедельник.")
+
+    else:
+        await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
+
+
+# Используется в воскресенье, когда нужно в любом случае поставить статус not ready
+@dp.callback_query_handler(meeting_status_callback.filter(status="meeting_status = not ready"))
+async def meeting_status_not_ready(callback: CallbackQuery):
+    await callback.answer(cache_time=10)
+
+    token = login(callback.from_user.id, constants.a).json().get("token")
+
+    if patch('not ready', token) == 200:
+        await callback.message.answer(f"Хорошо, тогда увидимся через неделю :) Но если тебе захочется найти собеседника, ты легко можешь изменить свой статус в профиле  с помощью команды /profile До встречи!")
+
+    else:
+        await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
+
+
+
 
 
 
