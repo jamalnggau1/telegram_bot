@@ -9,6 +9,7 @@ from constants import host
 import constants
 
 from data import config
+from enum_constans import meeting_status_constant, waiting_status_constant, not_ready_status_constant
 from states import Meeting_states
 from text_constants import change_profile, change_meeting_status
 from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback
@@ -39,15 +40,17 @@ async def profile(message: types.Message, state: FSMContext):
         text = f'Это твой личный профиль'
         text += f'''\nСтатус поиска собеседника: '''
         meeting_status = request_from_login.json().get("meeting_status")
-        if meeting_status == "waiting":
+        if meeting_status == waiting_status_constant:
             text += f'''в поисках собеседника'''
-        elif meeting_status == "not ready":
+        elif meeting_status == not_ready_status_constant:
             text += f'''не ищу собеседника'''
-        elif meeting_status == "meetting":
+        elif meeting_status == meeting_status_constant:
             if request_from_login.json().get("companion") is not None:
                 text += f'''общаюсь с @{request_from_login.json().get("companion")}'''
             else:
                 text += f'''возникла ошибка при выводи статуса поиска встреч. Твой статус: "общаюсь ...", но партнер отсутсвует. Обратись с этой ошибкой в поддержку через /help'''
+        else:
+            text += f'''возникла ошибка со статусами поиска всреч. Обратись с этой ошибкой в поддержку через /help'''
         if request_from_login.json().get("skills") is not None:
             text += f'''\nТебя интересует: {request_from_login.json().get("skills")}'''
         text += f'''\nEmail📧: {request_from_login.json().get("email")}'''
@@ -56,7 +59,7 @@ async def profile(message: types.Message, state: FSMContext):
         text += "\nЧто-нибудь изменилось?"
 
         # Если статус пользователя "meetting", то отправляем сообщение пользователю только с одной кнопкой "изменить профиль".
-        if meeting_status == "meetting":
+        if meeting_status == meeting_status_constant:
 
             await message.answer(text, reply_markup=one_button(text_btn=change_profile,
                                 callback_data=edite_profile_callback.new(status="edite_profile"),

@@ -1,17 +1,10 @@
-import datetime
-from random import randint
-
-from aiogram import types
-from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters import Command
 from aiogram.types import CallbackQuery
 
 import constants
+from enum_constans import meeting_status_constant, waiting_status_constant, not_ready_status_constant
 from keyboards.inline.callback_data import change_meeting_status_callback, meeting_status_callback
-from keyboards.inline.inline_buttons import meeting_status_button, two_buttons
-from loader import dp, pg_db
+from loader import dp
 from request_to_server.requests import patch, login
-from states import Meeting_states
 
 
 # @dp.message_handler(Command("meeting"))
@@ -65,48 +58,31 @@ from states import Meeting_states
 #             all_profiles.pop(second_profile_number)
 
 
-
-
-
-
-
-
-
-
-
-
-
 @dp.callback_query_handler(change_meeting_status_callback.filter(status="change_meeting_status"))
 async def change_meeting_status(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
+    current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
+    token = login(callback.from_user.id, constants.a).json().get("token")
 
-    current_meeting_status =login(callback.from_user.id, constants.a).json().get("meeting_status")
-    token=login(callback.from_user.id, constants.a).json().get("token")
-
-    if current_meeting_status == "meetting":
+    if current_meeting_status == meeting_status_constant:
         text_message = (f"Твой текущий статус: {current_meeting_status}. Это означает, что пара тебе подобрана, "
                         f"и встреча сейчас в самом разгаре. ")
-    elif current_meeting_status == "waitting":
-        if patch('not ready', token) == 200:
+    elif current_meeting_status == waiting_status_constant:
+        if patch(not_ready_status_constant, token) == 200:
             text_message = """Окей, пока тебе не нужен собеседник. Дай нам знать, если захочешь его найти:)"""
 
         else:
             text_message = f"Возникла ошибка, обратись в поддержку"
 
-    elif current_meeting_status == "not ready":
-        if patch('waitting', token) == 200:
+    elif current_meeting_status == not_ready_status_constant:
+        if patch(waiting_status_constant, token) == 200:
             text_message = """Окей, теперь ты ждешь собеседника. Мы займемся поиском прямо сейчас и напишем, когда найдем тебе собеседника:)"""
 
         else:
             text_message = f"Возникла ошибка, обратись в поддержку"
 
-
-
-
-
     await callback.message.answer(text_message)
-
 
 
 # Используется в воскресенье, когда нужно в любом случае поставить статус waiting
@@ -116,7 +92,7 @@ async def meeting_status_waiting(callback: CallbackQuery):
 
     token = login(callback.from_user.id, constants.a).json().get("token")
 
-    if patch('waitting', token)==200:
+    if patch(waiting_status_constant, token) == 200:
         await callback.message.answer(f"Хорошо Мы постараемся найти тебе собеседника в понедельник.")
 
     else:
@@ -130,14 +106,9 @@ async def meeting_status_not_ready(callback: CallbackQuery):
 
     token = login(callback.from_user.id, constants.a).json().get("token")
 
-    if patch('not ready', token) == 200:
-        await callback.message.answer(f"Хорошо, тогда увидимся через неделю :) Но если тебе захочется найти собеседника, ты легко можешь изменить свой статус в профиле  с помощью команды /profile До встречи!")
+    if patch(not_ready_status_constant, token) == 200:
+        await callback.message.answer(
+            f"Хорошо, тогда увидимся через неделю :) Но если тебе захочется найти собеседника, ты легко можешь изменить свой статус в профиле  с помощью команды /profile До встречи!")
 
     else:
         await callback.message.answer(f"Возникла ошибка, обратись в поддержку")
-
-
-
-
-
-

@@ -9,13 +9,12 @@ from loader import dp, bot
 @dp.message_handler(CommandHelp())
 async def bot_help(message: types.Message):
     text = "Здесь мы постараемся дать ответы на интересующие тебя вопросы. Что бы ты хотел узнать?"
-    
+
     await message.answer(text, reply_markup=help_keyboard())
 
 
 @dp.callback_query_handler(help_callbackdata.filter(status="just"))
-async def help_message(callback:types.CallbackQuery):
-
+async def help_message(callback: types.CallbackQuery):
     await callback.message.answer("""💡Подсказки для твоей первой встречи
             📆1) Когда ты получил собеседника, не стесняйся написать первым, сделать первый шаг навстречу - красивый и смелый жест.
             Начать можно так: Привет, бот BeNearly написал, что ты мой собеседник на этой неделе. Рад(а) познакомиться :)
@@ -30,14 +29,12 @@ async def help_message(callback:types.CallbackQuery):
 
             🔮4)Ну а мы готовы ответить в любое время под звездами. Просто воспользуйся командой /help.""")
 
-@dp.callback_query_handler(help_callbackdata.filter(status="how_bot_working"))
-async def how_bot_working(callback:types.CallbackQuery):
 
+@dp.callback_query_handler(help_callbackdata.filter(status="how_bot_working"))
+async def how_bot_working(callback: types.CallbackQuery):
     await callback.message.answer("""👍 Отлично""")
 
+
 @dp.callback_query_handler(help_callbackdata.filter(status="ask_question"))
-async def ask_question(callback:types.CallbackQuery):
-
+async def ask_question(callback: types.CallbackQuery):
     await callback.message.answer("""⬇️⬇️⬇️Вводи свой вопрос прям сюда⬇️⬇️⬇️""")
-
-
