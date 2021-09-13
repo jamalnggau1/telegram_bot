@@ -35,20 +35,28 @@ async def profile(message: types.Message, state: FSMContext):
     if request_from_login.status_code == 200:
 
         url = host + f'''/filling_profile/'''
-        text = f'''Привет 👋 {message.from_user.full_name}! На связи {bot_username}. Ты здесь не первый раз, не так ли?\nЯ о тебе кое-что помню: '''
-        text += f'''\nEmail📧: {request_from_login.json().get("email")}'''
-        text += f'''\nСтатус поиска собеседника: {request_from_login.json().get("meeting_status")}'''
-
-        if request_from_login.json().get("companion") is not None:
-            text += f'''\nУ тебя уже есть стреча. Твой собеседник: @{request_from_login.json().get("companion")}'''
-
-        print(f'''***********skills:{request_from_login.json().get("skills")}''')
+        # text = f'''Привет 👋 {message.from_user.full_name}! На связи {bot_username}. Ты здесь не первый раз, не так ли?\nЯ о тебе кое-что помню: '''
+        text = f'Это твой личный профиль'
+        text += f'''\nСтатус поиска собеседника: '''
+        meeting_status = request_from_login.json().get("meeting_status")
+        if meeting_status == "waiting":
+            text += f'''в поисках собеседника'''
+        elif meeting_status == "not ready":
+            text += f'''не ищу собеседника'''
+        elif meeting_status == "meetting":
+            if request_from_login.json().get("companion") is not None:
+                text += f'''общаюсь с @{request_from_login.json().get("companion")}'''
+            else:
+                text += f'''возникла ошибка при выводи статуса поиска встреч. Твой статус: "общаюсь ...", но партнер отсутсвует. Обратись с этой ошибкой в поддержку через /help'''
         if request_from_login.json().get("skills") is not None:
             text += f'''\nТебя интересует: {request_from_login.json().get("skills")}'''
-        text += "\nЧто бы ты хотел изменить?"
+        text += f'''\nEmail📧: {request_from_login.json().get("email")}'''
+
+        print(f'''***********skills:{request_from_login.json().get("skills")}''')
+        text += "\nЧто-нибудь изменилось?"
 
         # Если статус пользователя "meetting", то отправляем сообщение пользователю только с одной кнопкой "изменить профиль".
-        if request_from_login.json().get("meeting_status") == "meetting":
+        if meeting_status == "meetting":
 
             await message.answer(text, reply_markup=one_button(text_btn=change_profile,
                                 callback_data=edite_profile_callback.new(status="edite_profile"),
