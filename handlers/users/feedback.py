@@ -73,6 +73,23 @@ async def leave_feedback_4(callback: CallbackQuery):
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
 
+@dp.callback_query_handler(meeting_feedback_wednesday.filter(status="5"))
+async def leave_feedback_4(callback: CallbackQuery):
+    await callback.answer(cache_time=10)
+
+    response = leave_feedback(callback.from_user.id, constants.a, '👍')
+    if response.status_code == 200:
+        await callback.message.answer('Твой отзыв о встрече оставлен')
+        await callback.message.answer("Отлично! Хочешь найдем еще одного собеседника", reply_markup=two_buttons("Да",
+                                                                                                                change_meeting_status_callback.new(
+                                                                                                                    status="change_meeting_status"),
+                                                                                                                "Нет",
+                                                                                                                change_meeting_status_callback.new(
+                                                                                                                    status="ничего не делаем")))
+    else:
+        await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
+
+
 
 
 
