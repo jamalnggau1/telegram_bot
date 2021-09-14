@@ -1,18 +1,15 @@
 import json
 
 import requests as requests
-from aiogram import types
-from aiogram.dispatcher.filters.builtin import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.types.callback_query import CallbackQuery
 
 import constants
 from constants import host
 from data import config
-from keyboards.inline.callback_data import checking_meeting, meeting_status_callback, meeting_feedback_wednesday
+from keyboards.inline.callback_data import checking_meeting, meeting_feedback_wednesday
 from keyboards.inline.inline_buttons import leave_feedback_buttons
 from loader import dp
-from states.registration_states import Meeting_states
 
 
 @dp.callback_query_handler(checking_meeting.filter(status="ok_good!"))

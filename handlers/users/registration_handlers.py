@@ -1,54 +1,32 @@
-
-import constants
-from keyboards.inline.inline_buttons import one_button
-from request_to_server.requests import login
-from data import config
-import json
-
 import requests
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from aiogram.types import CallbackQuery
 
-from keyboards.inline.callback_data import change_meeting_status_callback
-from loader import dp
-from states import Registration_states
+import constants
 from constants import host
-
+from enum_constans import share_your_interests
+from keyboards.inline.inline_buttons import one_button
+from loader import dp
+from request_to_server.requests import login, registration
+from states import Registration_states
 
 
 @dp.message_handler(state=Registration_states.enter_email)
 async def enter_email(message: types.Message, state: FSMContext):
     email = message.text
     full_name = message.from_user.full_name
-    # user_name = "@" + message.from_user.username
     user_id = message.from_user.id
 
-    # await pg_db.add_profile(full_name, email, contacts=user_name)
+    registration_response = registration(user_id, full_name, email)
 
-    url =host+ "/filling_profile/users/"
+    if registration_response == 201:
 
-    payload = json.dumps({
-        "profile": {
-            "contacts": user_id,
-            "full_name": full_name,
-            "email": email
-        }
-    })
-    headers = {
-        'Content-Type': 'application/json'
-    }
-
-    response = requests.request("POST", url, headers=headers, data=payload)
-
-    if response.status_code == 201:
-
-        text = f'Теперь поделись своими интересами. Таким образом вы сможете лучше узнать друг о друге еще до встречи. Совпадающие интересы помогут быстро найти общие темы для общения. Но и различные интересы  часто дарят  множество  открытий для собеседников. Не волнуйся, ты всегда можешь изменить данные в своем профиле с помощью команды /profile'
+        text = share_your_interests
         url = host + f'''/filling_profile/'''
 
-        await message.answer(text, reply_markup=one_button(text_btn="Заполнить профиль",url=requests.post(url, params={'token': login(user_id, constants.a).json().get("token"),'contacts': user_id}).url))
+        await message.answer(text, reply_markup=one_button(text_btn="Заполнить профиль", url=requests.post(url, params={
+            'token': login(user_id, constants.a).json().get("token"), 'contacts': user_id}).url))
         await state.finish()
 
     else:
         await message.answer(f"Аккаунт не был зарегистрирован. Ошибка сервера при заполнении почты")
-

@@ -11,7 +11,7 @@ import constants
 from data import config
 from enum_constans import meeting_status_constant, waiting_status_constant, not_ready_status_constant
 from states import Meeting_states
-from text_constants import change_profile, change_meeting_status
+from enum_constans import change_profile, change_meeting_status
 from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback
 from keyboards.inline.inline_buttons import one_button, change_profile_or_status_button
 from loader import dp
