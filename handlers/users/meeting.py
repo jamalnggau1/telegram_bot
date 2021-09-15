@@ -71,14 +71,14 @@ async def change_meeting_status(callback: CallbackQuery):
                         f"и встреча сейчас в самом разгаре. ")
     elif current_meeting_status == waiting_status_constant:
         if patch(not_ready_status_constant, token) == 200:
-            text_message = """Окей, пока тебе не нужен собеседник. Дай нам знать, если захочешь его найти:)"""
+            text_message = """Тогда, надеюсь, увидимся в воскресенье, когда мы начинаем неделю новых встреч📬"""
 
         else:
             text_message = error_contact_support
 
     elif current_meeting_status == not_ready_status_constant:
         if patch(waiting_status_constant, token) == 200:
-            text_message = """Окей, теперь ты ждешь собеседника. Мы займемся поиском прямо сейчас и напишем, когда найдем тебе собеседника:)"""
+            text_message = """Тогда мы начнем поиск немедля. Скоро вернемся с новым собеседником⏰"""
 
         else:
             text_message = error_contact_support
