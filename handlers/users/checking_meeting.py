@@ -102,11 +102,12 @@ async def checking_meeting_status_change_partner(callback: CallbackQuery):
 
     await callback.message.answer(text)
 
-    profile_id = callback.from_user.id
+    profile_telegram = callback.from_user.id
     url = host + "/filling_profile/stop_meet_change_partner/"
 
     payload = json.dumps({
-        "profile_id": profile_id,
+
+        "profile_id": profile_telegram,
         "machine_token": a,
     })
     headers = {
