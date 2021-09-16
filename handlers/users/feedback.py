@@ -105,7 +105,7 @@ async def leave_feedback_1(callback: CallbackQuery, state: FSMContext):
 
     response = leave_feedback(callback.from_user.id, constants.a, '👎')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday,reply_markup=two_buttons("Да",change_meeting_status_callback.new(status="change_meeting_status"),"Нет",change_meeting_status_callback.new(status="ничего не делаем")))
+        await callback.message.answer(see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
@@ -117,12 +117,7 @@ async def leave_feedback_2(callback: CallbackQuery):
 
     response = leave_feedback(callback.from_user.id, constants.a, '😒')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday, reply_markup=two_buttons("Да",
-                                                                                                                change_meeting_status_callback.new(
-                                                                                                                    status="change_meeting_status"),
-                                                                                                                "Нет",
-                                                                                                                change_meeting_status_callback.new(
-                                                                                                                    status="ничего не делаем")))
+        await callback.message.answer(see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
@@ -133,12 +128,7 @@ async def leave_feedback_3(callback: CallbackQuery):
 
     response = leave_feedback(callback.from_user.id, constants.a, '🙂')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday, reply_markup=two_buttons("Да",
-                                                                                                                change_meeting_status_callback.new(
-                                                                                                                    status="change_meeting_status"),
-                                                                                                                "Нет",
-                                                                                                                change_meeting_status_callback.new(
-                                                                                                                    status="ничего не делаем")))
+        await callback.message.answer(see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
@@ -149,12 +139,7 @@ async def leave_feedback_4(callback: CallbackQuery):
 
     response = leave_feedback(callback.from_user.id, constants.a, '😍')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday, reply_markup=two_buttons("Да",
-                                                                                                                change_meeting_status_callback.new(
-                                                                                                                    status="change_meeting_status"),
-                                                                                                                "Нет",
-                                                                                                                change_meeting_status_callback.new(
-                                                                                                                    status="ничего не делаем")))
+        await callback.message.answer(see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
@@ -165,12 +150,7 @@ async def leave_feedback_4(callback: CallbackQuery):
 
     response = leave_feedback(callback.from_user.id, constants.a, '👍')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday, reply_markup=two_buttons("Да",
-                                                                                                                change_meeting_status_callback.new(
-                                                                                                                    status="change_meeting_status"),
-                                                                                                                "Нет",
-                                                                                                                change_meeting_status_callback.new(
-                                                                                                                    status="ничего не делаем")))
+        await callback.message.answer(see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
