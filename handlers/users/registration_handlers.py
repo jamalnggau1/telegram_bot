@@ -18,7 +18,7 @@ async def enter_email(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
 
     registration_response = registration(user_id, full_name, email)
-
+    print(f'********registration_response:{registration_response}')
     if registration_response == 201:
 
         text = share_your_interests
@@ -30,3 +30,4 @@ async def enter_email(message: types.Message, state: FSMContext):
 
     else:
         await message.answer(f"Аккаунт не был зарегистрирован. Ошибка сервера при заполнении почты")
+        await state.finish()
