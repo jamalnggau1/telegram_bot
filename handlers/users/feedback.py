@@ -2,7 +2,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
 import constants
-from enum_constans import want_find_another_companion, see_you_on_Sunday
+from enum_constans import want_find_another_companion, thank_you_for_feedback_see_you_on_Sunday, see_you_on_Sunday
 from keyboards.inline.callback_data import meeting_feedback, change_meeting_status_callback
 from keyboards.inline.inline_buttons import two_buttons
 from loader import dp
@@ -93,7 +93,7 @@ async def leave_feedback_4(callback: CallbackQuery):
 async def do_nothing(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    await callback.message.answer('Окей. Тогда, надеюсь, увидимся в воскресенье, когда мы начинаем неделю новых встреч.')
+    await callback.message.answer(see_you_on_Sunday)
 
 
 
@@ -105,7 +105,7 @@ async def leave_feedback_1(callback: CallbackQuery, state: FSMContext):
 
     response = leave_feedback(callback.from_user.id, constants.a, '👎')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday)
+        await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
@@ -117,7 +117,7 @@ async def leave_feedback_2(callback: CallbackQuery):
 
     response = leave_feedback(callback.from_user.id, constants.a, '😒')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday)
+        await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
@@ -128,7 +128,7 @@ async def leave_feedback_3(callback: CallbackQuery):
 
     response = leave_feedback(callback.from_user.id, constants.a, '🙂')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday)
+        await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
@@ -139,7 +139,7 @@ async def leave_feedback_4(callback: CallbackQuery):
 
     response = leave_feedback(callback.from_user.id, constants.a, '😍')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday)
+        await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
@@ -150,7 +150,7 @@ async def leave_feedback_4(callback: CallbackQuery):
 
     response = leave_feedback(callback.from_user.id, constants.a, '👍')
     if response.status_code == 200:
-        await callback.message.answer(see_you_on_Sunday)
+        await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
         await callback.message.answer('Невозможно оставить отзыв, обратитесь в поддержку жи есть')
 
