@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 
 from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback, \
-    meeting_status_callback, help_callbackdata, meeting_feedback_wednesday
+    meeting_status_callback, help_callbackdata, meeting_feedback
 
 
 def one_button(text_btn=None, callback_data=None, url=None):

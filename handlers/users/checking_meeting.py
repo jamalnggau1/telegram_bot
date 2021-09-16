@@ -7,7 +7,7 @@ from aiogram.types.callback_query import CallbackQuery
 import constants
 from constants import host, a
 from data import config
-from keyboards.inline.callback_data import checking_meeting, meeting_feedback_wednesday, change_meeting_status_callback
+from keyboards.inline.callback_data import checking_meeting, meeting_feedback, change_meeting_status_callback
 from keyboards.inline.inline_buttons import leave_feedback_buttons, two_buttons
 from loader import dp
 
@@ -29,10 +29,10 @@ async def checking_meeting_ok_good(callback: CallbackQuery):
 
     if response.status_code == 200:
         if response.json() == 'false':
-            await callback.message.answer('Замечательно✨ Как бы ты оценил встречу?',reply_markup=leave_feedback_buttons(meeting_feedback_wednesday))
+            await callback.message.answer('Замечательно✨ Как бы ты оценил встречу?', reply_markup=leave_feedback_buttons(meeting_feedback))
 
         elif response.json() == 'true':
-            await callback.message.answer('Твой собеседник уже оценил встречу. А что думаешь ты?', reply_markup=leave_feedback_buttons(meeting_feedback_wednesday))
+            await callback.message.answer('Твой собеседник уже оценил встречу. А что думаешь ты?', reply_markup=leave_feedback_buttons(meeting_feedback))
 
 
 
