@@ -44,7 +44,9 @@ def change_profile_or_status_button(text_btn1, url, text_btn2):
                     callback_data=edite_profile_callback.new(status="edite_profile"),
                     url=url
 
-                ),
+                )
+            ],
+            [
                 InlineKeyboardButton(
                     text=text_btn2,
                     callback_data=change_meeting_status_callback.new(status="change_meeting_status")
@@ -102,12 +104,14 @@ def help_keyboard():
                 InlineKeyboardButton(
                     text="Задай свой вопрос",
                     callback_data=help_callbackdata.new(status="ask_question"),
+                    url='t.me/BeHelpy_bot?start=666'
 
                 )
             ],
 
         ]
     )
+
 
 
 def leave_feedback_buttons(callback_data:CallbackData):

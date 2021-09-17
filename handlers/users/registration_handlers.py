@@ -4,7 +4,7 @@ from aiogram.dispatcher import FSMContext
 
 import constants
 from constants import host
-from enum_constans import share_your_interests
+from enum_constans import share_your_interests, if_you_have_questions_use_help
 from keyboards.inline.inline_buttons import one_button
 from loader import dp
 from request_to_server.requests import login, registration
@@ -22,7 +22,7 @@ async def enter_email(message: types.Message, state: FSMContext):
 
         text = share_your_interests
         url = host + f'''/filling_profile/'''
-
+        await message.answer(if_you_have_questions_use_help)
         await message.answer(text, reply_markup=one_button(text_btn="Заполнить профиль", url=requests.post(url, params={
             'token': login(user_id, constants.a).json().get("token"), 'contacts': user_id}).url))
         await state.finish()

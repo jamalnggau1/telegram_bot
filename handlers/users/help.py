@@ -23,7 +23,3 @@ async def help_message(callback: types.CallbackQuery):
 async def how_bot_working(callback: types.CallbackQuery):
     await callback.message.answer(how_bot_work)
 
-
-@dp.callback_query_handler(help_callbackdata.filter(status="ask_question"))
-async def ask_question(callback: types.CallbackQuery):
-    await callback.message.answer(write_your_question)

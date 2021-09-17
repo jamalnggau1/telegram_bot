@@ -6,7 +6,6 @@ async def set_default_commands(dp):
         [
             types.BotCommand("profile", "Мой профиль"),
             types.BotCommand("help", "Поддержка и вопросы"),
-            types.BotCommand("fast_meet", "10-минутные встречи"),
 
         ]
     )
