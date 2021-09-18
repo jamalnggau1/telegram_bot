@@ -66,24 +66,15 @@ async def change_meeting_status(callback: CallbackQuery):
     current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
     token = login(callback.from_user.id, constants.a).json().get("token")
 
-    if current_meeting_status == meeting_status_constant:
-        text_message = (f"Твой текущий статус: {current_meeting_status}. Это означает, что пара тебе подобрана, "
-                        f"и встреча сейчас в самом разгаре. ")
-    elif current_meeting_status == waiting_status_constant:
-        if patch(not_ready_status_constant, token) == 200:
-            text_message = """Тогда, надеюсь, увидимся в воскресенье, когда мы начинаем неделю новых встреч📬"""
+    if current_meeting_status == waiting_status_constant:
+        await callback.message.answer("""Тогда, надеюсь, увидимся в воскресенье, когда мы начинаем неделю новых встреч📬""")
+        patch(not_ready_status_constant, token)
 
-        else:
-            text_message = error_contact_support
 
     elif current_meeting_status == not_ready_status_constant:
-        if patch(waiting_status_constant, token) == 200:
-            text_message = """Тогда мы начнем поиск немедля. Скоро вернемся с новым собеседником⏰"""
+        await callback.message.answer("""Тогда мы начнем поиск немедля. Скоро вернемся с новым собеседником⏰""")
+        patch(waiting_status_constant, token)
 
-        else:
-            text_message = error_contact_support
-
-    await callback.message.answer(text_message)
 
 
 # Используется в воскресенье, когда нужно в любом случае поставить статус waiting
