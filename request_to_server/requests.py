@@ -4,7 +4,7 @@ import requests
 
 
 def registration(user_id, full_name, email):
-    url = host + "/filling_profile/users/"
+    url = host + "/api/users/"
 
     payload = json.dumps({
         "profile": {
@@ -21,9 +21,8 @@ def registration(user_id, full_name, email):
     return response
 
 
-
 def login(user_id=None, machine_token=None):
-    url = host + "/filling_profile/users/login/"
+    url = host + "/api/users/login/"
 
     payload = json.dumps({
         "profile": {
@@ -38,6 +37,31 @@ def login(user_id=None, machine_token=None):
     response = requests.request("POST", url, headers=headers, data=payload)
     return response
 
+def stop_meet_change_partner(profile_telegram, machine_token):
+    url = host + "/api/stop_meet_change_partner/"
+
+    payload = json.dumps({
+
+        "profile_id": profile_telegram,
+        "machine_token": machine_token,
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    return requests.request("POST", url, headers=headers, data=payload)
+
+
+
+def getfeedbackfromuser(user_telegram):
+    url = host + "/api/getfeedbackfromuser/"
+
+    payload = json.dumps({
+        "user_telegram": user_telegram
+    })
+    headers = {'Content-Type': 'application/json'}
+    return requests.request("POST", url, headers=headers, data=payload)
+
 
 def patch(meeting_status=None, token_value=None):
     if meeting_status is not None:
@@ -47,7 +71,7 @@ def patch(meeting_status=None, token_value=None):
 
     payload = json.dumps(payload_dict)
 
-    url = host + "/filling_profile/user/"
+    url = host + "/api/user/"
 
     token = 'Bearer ' + token_value
     headers = {
@@ -61,7 +85,7 @@ def patch(meeting_status=None, token_value=None):
 
 
 def leave_feedback(profile_id, machine_token, feedback):
-    url = host + "/filling_profile/leave_feedback/"
+    url = host + "/api/leave_feedback/"
 
     payload = json.dumps({
         "profile_id": profile_id,

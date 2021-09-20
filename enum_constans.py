@@ -1,7 +1,7 @@
-"""Meeting status"""
-waiting_status_constant = "waiting"
-meeting_status_constant = "meeting"
-not_ready_status_constant = "not ready"
+"""Profile meeting status"""
+waiting_status_constant = 1 #1 waiting
+meeting_status_constant = 2 #2 meeting
+not_ready_status_constant = 0 #0 not ready
 
 """Text button"""
 change_profile = 'изменить профиль'

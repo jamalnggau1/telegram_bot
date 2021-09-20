@@ -10,6 +10,7 @@ from data import config
 from keyboards.inline.callback_data import checking_meeting, meeting_feedback, change_meeting_status_callback
 from keyboards.inline.inline_buttons import leave_feedback_buttons, two_buttons
 from loader import dp
+from request_to_server.requests import getfeedbackfromuser, stop_meet_change_partner
 
 
 @dp.callback_query_handler(checking_meeting.filter(status="ok_good!"))
@@ -17,15 +18,7 @@ async def checking_meeting_ok_good(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
     user_telegram=callback.from_user.id
-
-
-    url = host+"/filling_profile/getfeedbackfromuser/"
-
-    payload = json.dumps({
-        "user_telegram": user_telegram
-    })
-    headers = {'Content-Type': 'application/json'}
-    response = requests.request("POST", url, headers=headers, data=payload)
+    response = getfeedbackfromuser(user_telegram)
 
     if response.status_code == 200:
         if response.json() == 'false':
@@ -35,19 +28,6 @@ async def checking_meeting_ok_good(callback: CallbackQuery):
             await callback.message.answer('Твой собеседник уже оценил встречу. А что думаешь ты?', reply_markup=leave_feedback_buttons(meeting_feedback))
 
 
-
-# @dp.callback_query_handler(checking_meeting.filter(status="not_communicate"))
-# async def checking_meeting_not_communicate(callback: CallbackQuery):
-#     await callback.answer(cache_time=10)
-#
-#     text = f'Подожди чуть-чуть, мы напомним о встрече собеседнику'
-#
-#     url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={callback.from_user.id}&text={text}'
-#
-#     payload = {}
-#     headers = {}
-#
-#     response = requests.request("POST", url, headers=headers, data=payload)
 
 
 @dp.callback_query_handler(checking_meeting.filter(status="not_answer"))
@@ -103,15 +83,4 @@ async def checking_meeting_status_change_partner(callback: CallbackQuery):
     await callback.message.answer(text)
 
     profile_telegram = callback.from_user.id
-    url = host + "/filling_profile/stop_meet_change_partner/"
-
-    payload = json.dumps({
-
-        "profile_id": profile_telegram,
-        "machine_token": a,
-    })
-    headers = {
-        'Content-Type': 'application/json'
-    }
-
-    response = requests.request("POST", url, headers=headers, data=payload)
+    response = stop_meet_change_partner(profile_telegram, a)
