@@ -5,7 +5,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.types.callback_query import CallbackQuery
 
 import constants
-from constants import host, a
+from constants import host, machine_token_constant
 from data import config
 from keyboards.inline.callback_data import checking_meeting, meeting_feedback, change_meeting_status_callback
 from keyboards.inline.inline_buttons import leave_feedback_buttons, two_buttons
@@ -83,4 +83,4 @@ async def checking_meeting_status_change_partner(callback: CallbackQuery):
     await callback.message.answer(text)
 
     profile_telegram = callback.from_user.id
-    response = stop_meet_change_partner(profile_telegram, a)
+    response = stop_meet_change_partner(profile_telegram, machine_token_constant)

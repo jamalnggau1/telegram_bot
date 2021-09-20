@@ -4,14 +4,10 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import Command
 
-from constants import host
-
-import constants
-
+from constants import host, api_constant, machine_token_constant
 from data import config
-from enum_constans import meeting_status_constant, waiting_status_constant, not_ready_status_constant
-from states import Meeting_states
 from enum_constans import change_profile, change_meeting_status
+from enum_constans import meeting_status_constant, waiting_status_constant, not_ready_status_constant
 from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback
 from keyboards.inline.inline_buttons import one_button, change_profile_or_status_button
 from loader import dp
@@ -30,12 +26,12 @@ async def profile(message: types.Message, state: FSMContext):
     bot_username = "@" + requests.request("POST", url, headers=headers, data=payload).json().get("result").get(
         "username")
 
-    request_from_login = login(user_id, constants.a)
+    request_from_login = login(user_id, machine_token_constant)
     # Если login вернул статус не 200(нет пользователя в базе), предлагаем пользователю зарегаться.
     # status = 200 - Все хорошо profile есть
     if request_from_login.status_code == 200:
 
-        url = host + f'''/filling_profile/'''
+        url = host + api_constant
         # text = f'''Привет 👋 {message.from_user.full_name}! На связи {bot_username}. Ты здесь не первый раз, не так ли?\nЯ о тебе кое-что помню: '''
         text = f'Это твой личный профиль'
         text += f'''\nСтатус поиска собеседника: '''

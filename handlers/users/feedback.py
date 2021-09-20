@@ -14,7 +14,7 @@ from states import Meeting_states, Registration_states
 async def leave_feedback_1(callback: CallbackQuery, state: FSMContext):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '👎')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '👎')
     if response.status_code == 200:
         await callback.message.answer(want_find_another_companion,reply_markup=two_buttons("Да",change_meeting_status_callback.new(status="change_meeting_status"),"Нет",change_meeting_status_callback.new(status="ничего не делаем")))
     else:
@@ -26,7 +26,7 @@ async def leave_feedback_1(callback: CallbackQuery, state: FSMContext):
 async def leave_feedback_2(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '😒')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '😒')
     if response.status_code == 200:
         await callback.message.answer(want_find_another_companion, reply_markup=two_buttons("Да",
                                                                                                                 change_meeting_status_callback.new(
@@ -42,7 +42,7 @@ async def leave_feedback_2(callback: CallbackQuery):
 async def leave_feedback_3(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '🙂')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '🙂')
     if response.status_code == 200:
         await callback.message.answer(want_find_another_companion, reply_markup=two_buttons("Да",
                                                                                                                 change_meeting_status_callback.new(
@@ -58,7 +58,7 @@ async def leave_feedback_3(callback: CallbackQuery):
 async def leave_feedback_4(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '😍')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '😍')
     if response.status_code == 200:
         await callback.message.answer(want_find_another_companion, reply_markup=two_buttons("Да",
                                                                                                                 change_meeting_status_callback.new(
@@ -74,7 +74,7 @@ async def leave_feedback_4(callback: CallbackQuery):
 async def leave_feedback_4(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '👍')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '👍')
     if response.status_code == 200:
         await callback.message.answer(want_find_another_companion, reply_markup=two_buttons("Да",
                                                                                                                 change_meeting_status_callback.new(
@@ -103,7 +103,7 @@ async def do_nothing(callback: CallbackQuery):
 async def leave_feedback_1(callback: CallbackQuery, state: FSMContext):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '👎')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '👎')
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
@@ -115,7 +115,7 @@ async def leave_feedback_1(callback: CallbackQuery, state: FSMContext):
 async def leave_feedback_2(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '😒')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '😒')
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
@@ -126,7 +126,7 @@ async def leave_feedback_2(callback: CallbackQuery):
 async def leave_feedback_3(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '🙂')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '🙂')
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
@@ -137,7 +137,7 @@ async def leave_feedback_3(callback: CallbackQuery):
 async def leave_feedback_4(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '😍')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '😍')
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
@@ -148,7 +148,7 @@ async def leave_feedback_4(callback: CallbackQuery):
 async def leave_feedback_4(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.a, '👍')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '👍')
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:

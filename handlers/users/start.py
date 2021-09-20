@@ -3,8 +3,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart
 
-import constants
-from constants import host
+from constants import host, api_constant, machine_token_constant
 from data import config
 from enum_constans import meeting_status_constant, waiting_status_constant, not_ready_status_constant
 from keyboards.inline.callback_data import edite_profile_callback
@@ -29,12 +28,12 @@ async def bot_start(message: types.Message, state: FSMContext):
 
     # Если login вернул статус не 200(нет пользователя в базе), предлагаем пользователю зарегаться.
     # status = 200 - Все хорошо profile есть
-    request_from_login = login(user_id, constants.a)
+    request_from_login = login(user_id, machine_token_constant)
     # Если login вернул статус не 200(нет пользователя в базе), предлагаем пользователю зарегаться.
     # status = 200 - Все хорошо profile есть
     if request_from_login.status_code == 200:
 
-        url = host + '''/filling_profile/'''
+        url = host + api_constant
         # text = f'''Привет 👋 {message.from_user.full_name}! На связи {bot_username}. Ты здесь не первый раз, не так ли?\nЯ о тебе кое-что помню: '''
         text = 'Это твой личный профиль'
         text += f'''\nСтатус поиска собеседника: '''

@@ -63,8 +63,8 @@ from request_to_server.requests import patch, login
 async def change_meeting_status(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    current_meeting_status = login(callback.from_user.id, constants.a).json().get("meeting_status")
-    token = login(callback.from_user.id, constants.a).json().get("token")
+    current_meeting_status = login(callback.from_user.id, constants.machine_token_constant).json().get("meeting_status")
+    token = login(callback.from_user.id, constants.machine_token_constant).json().get("token")
 
     if current_meeting_status == waiting_status_constant:
         await callback.message.answer("""Тогда, надеюсь, увидимся в воскресенье, когда мы начинаем неделю новых встреч📬""")
@@ -82,7 +82,7 @@ async def change_meeting_status(callback: CallbackQuery):
 async def meeting_status_waiting(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    token = login(callback.from_user.id, constants.a).json().get("token")
+    token = login(callback.from_user.id, constants.machine_token_constant).json().get("token")
 
     if patch(waiting_status_constant, token) == 200:
         await callback.message.answer(find_companion_on_Monday)
@@ -96,7 +96,7 @@ async def meeting_status_waiting(callback: CallbackQuery):
 async def meeting_status_not_ready(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    token = login(callback.from_user.id, constants.a).json().get("token")
+    token = login(callback.from_user.id, constants.machine_token_constant).json().get("token")
 
     if patch(not_ready_status_constant, token) == 200:
         await callback.message.answer(see_you_in_week)

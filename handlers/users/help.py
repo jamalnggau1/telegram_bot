@@ -1,10 +1,10 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandHelp
 
-from enum_constans import first_meet, how_bot_work, write_your_question
+from enum_constans import first_meet, how_bot_work
 from keyboards.inline.callback_data import help_callbackdata
-from keyboards.inline.inline_buttons import help_keyboard, meeting_status_button, one_button
-from loader import dp, bot
+from keyboards.inline.inline_buttons import help_keyboard
+from loader import dp
 
 
 @dp.message_handler(CommandHelp())
