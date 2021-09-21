@@ -33,11 +33,13 @@ async def bot_start(message: types.Message, state: FSMContext):
     # status = 200 - Все хорошо profile есть
     if request_from_login.status_code == 200:
 
-        url = host + api_constant
-        # text = f'''Привет 👋 {message.from_user.full_name}! На связи {bot_username}. Ты здесь не первый раз, не так ли?\nЯ о тебе кое-что помню: '''
+
+        # ссылка для изменения профиля.
+        url = host + '/filling_profile/'
         text = 'Это твой личный профиль'
         text += f'''\nСтатус поиска собеседника: '''
-        meeting_status = request_from_login.json().get("meeting_status")
+        # meeting_status из json приходит как str
+        meeting_status = int(request_from_login.json().get("meeting_status"))
         if meeting_status == waiting_status_constant:
             text += f'''в поисках собеседника'''
         elif meeting_status == not_ready_status_constant:

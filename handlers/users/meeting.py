@@ -63,7 +63,7 @@ from request_to_server.requests import patch, login
 async def change_meeting_status(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    current_meeting_status = login(callback.from_user.id, constants.machine_token_constant).json().get("meeting_status")
+    current_meeting_status = int(login(callback.from_user.id, constants.machine_token_constant).json().get("meeting_status"))
     token = login(callback.from_user.id, constants.machine_token_constant).json().get("token")
 
     if current_meeting_status == waiting_status_constant:
