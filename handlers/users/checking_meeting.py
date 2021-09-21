@@ -55,13 +55,7 @@ async def checking_meeting_not_answer(callback: CallbackQuery):
             ]
         ]
     )
-
-    url = f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={callback.from_user.id}&text={text}&reply_markup={a}'
-
-    payload = {}
-    headers = {}
-
-    response = requests.request("POST", url, headers=headers, data=payload)
+    await callback.message.answer(text, reply_markup=a)
 
 
 @dp.callback_query_handler(checking_meeting.filter(status="I_wait"))
