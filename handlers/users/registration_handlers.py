@@ -21,8 +21,7 @@ async def enter_email(message: types.Message, state: FSMContext):
     if registration_response.status_code == 201:
 
         text = share_your_interests
-        url = host + api_constant
-        await message.answer(if_you_have_questions_use_help)
+        url = host + '/filling_profile/'
         await message.answer(text, reply_markup=one_button(text_btn="Заполнить профиль", url=requests.post(url, params={
             'token': login(user_id, constants.machine_token_constant).json().get("token"), 'contacts': user_id}).url))
         await state.finish()
