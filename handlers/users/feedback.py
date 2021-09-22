@@ -103,7 +103,7 @@ async def do_nothing(callback: CallbackQuery):
 async def leave_feedback_1(callback: CallbackQuery, state: FSMContext):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '👎')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, 1)
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
@@ -115,7 +115,7 @@ async def leave_feedback_1(callback: CallbackQuery, state: FSMContext):
 async def leave_feedback_2(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '😒')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, 2)
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
@@ -126,7 +126,7 @@ async def leave_feedback_2(callback: CallbackQuery):
 async def leave_feedback_3(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '🙂')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, 3)
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
@@ -137,7 +137,7 @@ async def leave_feedback_3(callback: CallbackQuery):
 async def leave_feedback_4(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '😍')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, 4)
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
@@ -148,7 +148,7 @@ async def leave_feedback_4(callback: CallbackQuery):
 async def leave_feedback_4(callback: CallbackQuery):
     await callback.answer(cache_time=10)
 
-    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, '👍')
+    response = leave_feedback(callback.from_user.id, constants.machine_token_constant, 5)
     if response.status_code == 200:
         await callback.message.answer(thank_you_for_feedback_see_you_on_Sunday)
     else:
