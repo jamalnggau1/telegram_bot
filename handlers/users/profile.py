@@ -12,6 +12,7 @@ from keyboards.inline.callback_data import change_meeting_status_callback, edite
 from keyboards.inline.inline_buttons import one_button, change_profile_or_status_button
 from loader import dp
 from request_to_server.requests import login
+from states import Registration_states
 
 
 @dp.message_handler(Command("profile"))
@@ -69,7 +70,13 @@ async def profile(message: types.Message, state: FSMContext):
     # profile не найден
     else:
         await message.answer(
-            f"Привет 👋 {message.from_user.full_name}! На связи {bot_username}, я смотрю ты здесь первый раз. Нам "
-            f"нужно пройти  регистрацию️", reply_markup=one_button(text_btn="регистрация",callback_data=change_meeting_status_callback.new(status="reg"), url=None))
+            f'Привет 👋. На связи {bot_username}, позволь рассказать немного о себе Каждую неделю я  буду искать тебе '
+            f"случайного собеседника, чтобы вместе делать интересные вещи: изучать язык, обсуждать кейсы, найти что-то "
+            f"свое или просто развлечься вечером. Теперь пойдем за мной, я расскажу, что делать, чтобы скорее найти собеседника🧙‍♂")
+
+        await message.answer(f"Первым делом, напиши свою почту для регистрации⏬")
+
+        # await Meeting_states.promeshytok_state.set()
+        await Registration_states.enter_email.set()
 
 
