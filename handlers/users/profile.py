@@ -35,7 +35,7 @@ async def profile(message: types.Message, state: FSMContext):
         # ссылка для изменения профиля.
         url = host + '/filling_profile/'
         # text = f'''Привет 👋 {message.from_user.full_name}! На связи {bot_username}. Ты здесь не первый раз, не так ли?\nЯ о тебе кое-что помню: '''
-        text = f'<u>Это твой личный профиль</u>'
+        text = f'Это твой личный профиль'
         text += f'''\nСтатус поиска собеседника: '''
         meeting_status = int(request_from_login.json().get("meeting_status"))
         if meeting_status == waiting_status_constant:
