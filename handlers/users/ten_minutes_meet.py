@@ -7,6 +7,7 @@ from keyboards.inline.inline_buttons import one_button
 from loader import dp
 
 
+
 @dp.message_handler(Command("fast_meet"))
 async def fast_meet_start(message: types.Message, state: FSMContext):
     await message.answer("🧙‍♀️ В тот же миг Алиса юркнула за ним следом, не думая о том, как же она будет выбираться обратно.",
