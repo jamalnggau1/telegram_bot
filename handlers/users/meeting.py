@@ -8,57 +8,6 @@ from loader import dp
 from request_to_server.requests import patch, login
 
 
-# @dp.message_handler(Command("meeting"))
-# async def meeting(message: types.Message):
-#
-#     await message.answer('Ты выбрал опцию сформировать встречи')
-#
-#     all_profiles = await pg_db.select_all_profiles_for_meeting()
-#
-#
-#     await message.answer('четное число профилей')
-#
-#     while len(all_profiles) > 0:
-#         print(f'-------------Весь список до взятия первого: {all_profiles}---------------------')
-#         first_profile = all_profiles.pop(0)
-#         print(f'-------------Первый пользователь: {first_profile[1]}---------------------')
-#         print(f'-------------Весь список после взятия первого: {all_profiles}----------------------')
-#
-#         selection_list=all_profiles.copy()
-#
-#         meeting_success=False
-#         while (len(selection_list) > 0) and (not meeting_success):
-#             second_profile_number = randint(0, len(selection_list) - 1)
-#             second_profile = selection_list[second_profile_number]
-#             print(f'-------------Второй пользователь: {second_profile[1]}-------------------')
-#             print(f'-------------Весь список после взятия второго: {all_profiles}---------------------')
-#
-#             # if ..... проверка встречались ли first_profile и second_profile до этого
-#
-#             meeting_list = await pg_db.select_meet_list(first_profile[1])
-#
-#             meeting_indicator = False
-#             for meet in meeting_list:
-#
-#                 if second_profile[1] == meet[6]:
-#                     meeting_indicator = True
-#                     print(f'-------------meeting_indicator = True. А весь список при этом: {all_profiles}---------------------')
-#
-#
-#             if meeting_indicator == False:
-#                 print(f'------------Пара сформирована--------------')
-#                 await pg_db.add_meet(first_profile[1], second_profile[1], date_meeting=datetime.datetime.now())
-#                 meeting_success=True
-#             else:
-#                 selection_list.pop(second_profile_number)
-#                 print(f'------------Такая пара уже была--------------')
-#                 print(f'-------------А весь список при этом: {all_profiles}---------------------')
-#
-#         if meeting_success == True:
-#             print(f'-------------Удаляем пользователя: {all_profiles[second_profile_number]}---------------------')
-#             all_profiles.pop(second_profile_number)
-
-
 @dp.callback_query_handler(change_meeting_status_callback.filter(status="change_meeting_status"))
 async def change_meeting_status(callback: CallbackQuery):
     await callback.answer(cache_time=10)

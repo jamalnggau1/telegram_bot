@@ -2,10 +2,10 @@ import requests as requests
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart
-
+from aiogram.dispatcher.filters.builtin import Command
 from constants import host, api_constant, machine_token_constant
 from data import config
-from enum_constans import meeting_status_constant, waiting_status_constant, not_ready_status_constant
+from enum_constans import meeting_status_constant, waiting_status_constant, not_ready_status_constant, write_your_email
 from keyboards.inline.callback_data import edite_profile_callback
 from keyboards.inline.inline_buttons import one_button, change_profile_or_status_button
 from loader import dp
@@ -14,7 +14,7 @@ from states import Registration_states
 from enum_constans import change_profile, change_meeting_status
 
 
-@dp.message_handler(CommandStart())
+@dp.message_handler(CommandStart() | Command("profile"))
 async def bot_start(message: types.Message, state: FSMContext):
     # подбираем user_id
     user_id = message.from_user.id
@@ -32,7 +32,6 @@ async def bot_start(message: types.Message, state: FSMContext):
     # Если login вернул статус не 200(нет пользователя в базе), предлагаем пользователю зарегаться.
     # status = 200 - Все хорошо profile есть
     if request_from_login.status_code == 200:
-
 
         # ссылка для изменения профиля.
         url = host + '/filling_profile/'
@@ -82,7 +81,6 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 Теперь попробуем приступить к поиску собеседника🧙‍♂""")
 
-        await message.answer(f"Первым делом, напиши свою почту для регистрации⏬")
+        await message.answer(write_your_email)
 
-        # await Meeting_states.promeshytok_state.set()
         await Registration_states.enter_email.set()

@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandHelp
 
-from enum_constans import first_meet, how_bot_work
+from enum_constans import first_meet, how_bot_work, help_menu
 from keyboards.inline.callback_data import help_callbackdata
 from keyboards.inline.inline_buttons import help_keyboard
 from loader import dp
@@ -9,7 +9,7 @@ from loader import dp
 
 @dp.message_handler(CommandHelp())
 async def bot_help(message: types.Message):
-    text = "Здесь мы постараемся дать ответы на интересующие тебя вопросы. Что бы ты хотел узнать?"
+    text = help_menu
 
     await message.answer(text, reply_markup=help_keyboard())
 

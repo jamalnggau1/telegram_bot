@@ -1,6 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 
+from enum_constans import how_bot_work_button, first_meeting_tips, ask_your_question, questions_bot_url
 from keyboards.inline.callback_data import change_meeting_status_callback, edite_profile_callback, \
     meeting_status_callback, help_callbackdata, meeting_feedback
 
@@ -88,23 +89,23 @@ def help_keyboard():
             [
 
                 InlineKeyboardButton(
-                    text="Как работает бот?",
+                    text=how_bot_work_button,
                     callback_data=help_callbackdata.new(status="how_bot_working"),
 
                 )
             ],
             [
                 InlineKeyboardButton(
-                    text="Подсказки для первой встречи",
+                    text=first_meeting_tips,
                     callback_data=help_callbackdata.new(status="just"),
 
                 )
             ],
             [
                 InlineKeyboardButton(
-                    text="Задай свой вопрос",
+                    text=ask_your_question,
                     callback_data=help_callbackdata.new(status="ask_question"),
-                    url='t.me/BeHelpy_bot?start=666'
+                    url=questions_bot_url
 
                 )
             ],
