@@ -35,8 +35,8 @@ async def bot_start(message: types.Message, state: FSMContext):
 
         # ссылка для изменения профиля.
         url = host + '/filling_profile/'
-        # text = 'Это твой личный профиль'
-        text = f'''\nСтатус: '''
+        text = '🪞Карточка профиля🪞\n'
+        text += f'''\nСтатус: '''
         # meeting_status из json приходит как str
         meeting_status = int(request_from_login.json().get("meeting_status"))
         if meeting_status == waiting_status_constant:
