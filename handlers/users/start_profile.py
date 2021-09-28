@@ -35,8 +35,8 @@ async def bot_start(message: types.Message, state: FSMContext):
 
         # ссылка для изменения профиля.
         url = host + '/filling_profile/'
-        text = 'Это твой личный профиль'
-        text += f'''\nСтатус поиска собеседника: '''
+        # text = 'Это твой личный профиль'
+        text = f'''\nСтатус: '''
         # meeting_status из json приходит как str
         meeting_status = int(request_from_login.json().get("meeting_status"))
         if meeting_status == waiting_status_constant:
@@ -45,14 +45,16 @@ async def bot_start(message: types.Message, state: FSMContext):
             text += f'''не ищу собеседника'''
         elif meeting_status == meeting_status_constant:
             if request_from_login.json().get("companion") is not None:
-                text += f'''общаюсь с @{request_from_login.json().get("companion")}'''
+                # text += f'''общаюсь с @{request_from_login.json().get("companion")}'''
+                text += 'получил '+f"""<a href="tg://user?id={request_from_login.json().get("companion")}">собеседника☕</a>"""
+
             else:
                 text += f'''возникла ошибка при выводи статуса поиска встреч. Твой статус: "общаюсь ...", но партнер отсутсвует. Обратись с этой ошибкой в поддержку через /help'''
         else:
             text += f'''возникла ошибка со статусами поиска всреч. Обратись с этой ошибкой в поддержку через /help'''
         if request_from_login.json().get("skills") is not None:
-            text += f'''\nТебя интересует: {request_from_login.json().get("skills")}'''
-        text += f'''\nEmail📧: {request_from_login.json().get("email")}'''
+            text += f'''\nИнтересы: {request_from_login.json().get("skills")}'''
+        text += f'''\nМоя почта: {request_from_login.json().get("email")}'''
 
         print(f'''***********skills:{request_from_login.json().get("skills")}''')
         text += "\nЧто-нибудь изменилось?"
