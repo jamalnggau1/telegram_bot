@@ -4,7 +4,9 @@ from aiogram.dispatcher import FSMContext
 
 import constants
 from constants import host, api_constant
-from enum_constans import share_your_interests, if_you_have_questions_use_help, invalid_email
+from enum_constans import share_your_interests, if_you_have_questions_use_help, invalid_email, fast_meet_message, \
+    fast_meet_bot_url, blank_email
+from keyboards.inline.callback_data import change_meeting_status_callback
 from keyboards.inline.inline_buttons import one_button
 from loader import dp
 from request_to_server.requests import login, registration
@@ -20,7 +22,18 @@ async def enter_email(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
 
 
-    if not is_valid_email(email):
+    if email == "/fast_meet":
+        await message.answer(
+            text=fast_meet_message,
+            reply_markup=one_button(
+                text_btn="🔮 перейти к 10-минутным встречам 🧙‍♀️",
+                callback_data=change_meeting_status_callback.new(status="10"),
+                url=fast_meet_bot_url
+            )
+        )
+    elif (email == "/profile") or (email == "/start"):
+        await message.answer(blank_email)
+    elif not is_valid_email(email):
         await message.answer(invalid_email)
         return
     else:
