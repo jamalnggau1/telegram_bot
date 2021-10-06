@@ -36,7 +36,7 @@ async def bot_start(message: types.Message, state: FSMContext):
 
         # ссылка для изменения профиля.
         url = host + '/filling_profile/'
-        if request_from_login.json().get("skills") is not None:
+        if len(request_from_login.json().get("skills")) >0:
             text = '🪞Карточка профиля🪞\n'
             text += f'''\nСтатус: '''
             # meeting_status из json приходит как str
